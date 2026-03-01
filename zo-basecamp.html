@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zo Basecamp — Ziro Valley</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --zo:#F15824;--zo2:#FF7A45;--zo3:#C94010;
+  --acid:#E8FF47;--acid2:#C8E832;
+  --r:8px;--r2:12px;
+  --tr:.2s cubic-bezier(.25,.46,.45,.94);
+  --font:'Space Grotesk',sans-serif;
+  --mono:'Space Mono',monospace;
+}
+/* DARK MODE (default) */
+body.dark{
+  --bg:#0A0A0A;--bg2:#111111;--bg3:#181818;--bg4:#222222;
+  --border:#2A2A2A;--border2:#333;
+  --text:#F0F0F0;--mut:#666;--mutl:#444;--white:#F0F0F0;
+}
+/* LIGHT MODE */
+body.light{
+  --bg:#F5F5F0;--bg2:#FFFFFF;--bg3:#F0EFE8;--bg4:#E8E7E0;
+  --border:#E0DED8;--border2:#CACAC0;
+  --text:#1A1A1A;--mut:#777;--mutl:#AAA;--white:#1A1A1A;
+  --acid:#6B7700;--acid2:#5A6600;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh;transition:background .3s,color .3s;}
+body.dark::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:0;}
+::-webkit-scrollbar{width:3px;height:3px;}
+::-webkit-scrollbar-thumb{background:var(--zo);border-radius:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+
+/* THEME TOGGLE */
+.theme-toggle{background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:4px 8px;display:flex;align-items:center;gap:6px;cursor:pointer;transition:var(--tr);}
+.theme-toggle:hover{border-color:var(--zo);}
+.tt-track{width:34px;height:18px;background:var(--bg4);border-radius:20px;position:relative;transition:.3s;border:1px solid var(--border2);}
+.tt-knob{width:12px;height:12px;border-radius:50%;background:var(--zo);position:absolute;top:2px;left:2px;transition:.3s;}
+body.light .tt-track{background:rgba(241,88,36,.15);}
+body.light .tt-knob{left:18px;}
+.tt-icon{font-size:.75rem;}
+
+/* ── STICKY STACK ── */
+.ticker{background:var(--zo);padding:7px 0;overflow:hidden;position:sticky;top:0;z-index:400;}
+
+header{background:var(--bg);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:33px;z-index:300;transition:background .3s,border-color .3s;}
+
+.cd-band{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;transition:background .3s;position:sticky;top:99px;z-index:200;}
+
+.nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 24px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;position:sticky;top:167px;z-index:100;transition:background .3s;}
+.nav::-webkit-scrollbar{display:none;}.ticker-inner{display:flex;animation:tick 28s linear infinite;white-space:nowrap;width:max-content;}
+.ticker-inner span{font-family:var(--mono);font-size:.6rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:2px;padding:0 32px;}
+.ticker-inner span::before{content:'✦';margin-right:16px;opacity:.6;}
+@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ── HEADER ── */
+header{background:var(--bg);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:33px;z-index:200;transition:background .3s,border-color .3s;}
+.logo{display:flex;align-items:center;gap:14px;padding:14px 0;}
+.lmark{width:38px;height:38px;background:var(--zo);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:1.1rem;font-weight:700;color:#fff;flex-shrink:0;}
+.ltext h1{font-size:.85rem;font-weight:700;color:var(--white);letter-spacing:1px;text-transform:uppercase;}
+.ltext p{font-family:var(--mono);font-size:.48rem;color:var(--mut);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+.hright{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.hpill{font-family:var(--mono);font-size:.52rem;font-weight:700;padding:5px 12px;border-radius:2px;letter-spacing:.8px;text-transform:uppercase;border:1px solid var(--border2);color:var(--mut);background:transparent;}
+.hpill.hot{border-color:var(--zo);color:var(--zo);}
+.cfg-btn{background:var(--zo);color:#fff;border:none;border-radius:3px;padding:8px 18px;font-size:.62rem;font-weight:700;cursor:pointer;font-family:var(--mono);text-transform:uppercase;letter-spacing:.8px;transition:var(--tr);}
+.cfg-btn:hover{background:var(--zo2);}
+
+/* ── COUNTDOWN BAND ── */
+.cd-band{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;transition:background .3s;}
+.cd-left{display:flex;align-items:center;gap:20px;}
+.cd-label{font-family:var(--mono);font-size:.48rem;color:var(--mut);text-transform:uppercase;letter-spacing:1.5px;}
+.cd-units{display:flex;align-items:center;gap:4px;}
+.cd-unit{text-align:center;min-width:54px;}
+.cd-unit .n{font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--zo);line-height:1;letter-spacing:-1px;font-variant-numeric:tabular-nums;}
+body.dark .cd-unit .n{color:var(--acid);}
+.cd-unit .l{font-family:var(--mono);font-size:.4rem;color:var(--mut);text-transform:uppercase;letter-spacing:1.2px;margin-top:2px;}
+.cd-sep{font-family:var(--mono);font-size:1.3rem;color:var(--zo);margin-bottom:8px;opacity:.6;}
+.cd-right{display:flex;align-items:center;gap:12px;}
+.cd-tag{font-family:var(--mono);font-size:.5rem;font-weight:700;padding:4px 12px;border-radius:2px;text-transform:uppercase;letter-spacing:.8px;cursor:pointer;}
+.cd-tag.comfort{background:rgba(232,255,71,.1);color:#7a8a00;border:1px solid rgba(150,170,0,.25);}
+body.dark .cd-tag.comfort{color:var(--acid);border-color:rgba(232,255,71,.25);}
+.cd-tag.soon{background:rgba(251,191,36,.1);color:#c97d00;border:1px solid rgba(251,191,36,.25);}
+body.dark .cd-tag.soon{color:#fbbf24;}
+.cd-tag.urgent{background:rgba(239,68,68,.1);color:#dc2626;border:1px solid rgba(239,68,68,.25);}
+body.dark .cd-tag.urgent{color:#f87171;}
+.cd-weeks{font-family:var(--mono);font-size:.52rem;color:var(--mut);}
+
+/* ── NAV ── */
+.nav{background:var(--bg);border-bottom:1px solid var(--border);padding:0 24px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;position:sticky;top:103px;z-index:199;transition:background .3s;}
+.nav::-webkit-scrollbar{display:none;}
+.nav-inner{display:inline-flex;}
+.ntab{padding:14px 16px;cursor:pointer;font-family:var(--mono);font-size:.52rem;font-weight:700;color:var(--mut);border-bottom:2px solid transparent;transition:var(--tr);display:inline-flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.8px;}
+.ntab:hover{color:var(--white);}
+.ntab.active{color:var(--zo);border-bottom-color:var(--zo);}
+
+/* ── CONTENT ── */
+.content{padding:28px 24px;max-width:1140px;margin:0 auto;position:relative;z-index:1;}
+.panel{display:none;animation:fu .22s ease;}
+.panel.active{display:block;}
+@keyframes fu{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* Prevent bleed-through on scroll */
+.ticker,.cd-band{isolation:isolate;}
+header::after,.nav::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:var(--border);}
+header,header *{-webkit-backdrop-filter:none;}
+
+.sh{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.sh-tag{font-family:var(--mono);font-size:.48rem;color:var(--zo);text-transform:uppercase;letter-spacing:2px;border:1px solid var(--zo);padding:3px 10px;border-radius:2px;}
+.sh-line{flex:1;height:1px;background:var(--border);}
+.sh-num{font-family:var(--mono);font-size:.48rem;color:var(--mutl);}
+
+/* ── CARDS ── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:16px;transition:var(--tr),background .3s;}
+.card:hover{border-color:var(--border2);}
+.card.glow:hover{border-color:var(--zo);box-shadow:0 0 24px rgba(241,88,36,.08);}
+.ct{font-family:var(--mono);font-size:.5rem;font-weight:700;color:var(--zo);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.ct::after{content:'';flex:1;height:1px;background:var(--border);}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+
+/* ── HERO ── */
+.hero{border:1px solid var(--border);border-radius:var(--r);padding:52px 44px;position:relative;overflow:hidden;margin-bottom:24px;background:var(--bg2);}
+.hero::before{content:'ZO';position:absolute;right:-20px;bottom:-40px;font-family:var(--mono);font-size:14rem;font-weight:700;color:var(--border);line-height:1;pointer-events:none;user-select:none;}
+.hero-tag{font-family:var(--mono);font-size:.48rem;color:var(--mut);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.hero-tag::before{content:'';width:24px;height:1px;background:var(--zo);}
+.hero h2{font-size:3.8rem;font-weight:700;color:var(--white);line-height:.95;letter-spacing:-2px;margin-bottom:8px;position:relative;z-index:1;}
+.hero h2 em{color:var(--zo);font-style:italic;}
+.hero-sub{font-family:var(--mono);font-size:.55rem;color:var(--mut);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:36px;position:relative;z-index:1;}
+.hstats{display:flex;gap:0;flex-wrap:wrap;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;position:relative;z-index:1;max-width:600px;}
+.hst{flex:1;min-width:80px;padding:16px 18px;text-align:center;border-right:1px solid var(--border);transition:var(--tr);cursor:default;}
+.hst:last-child{border-right:none;}
+.hst:hover{background:var(--bg3);}
+.hst .n{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--white);line-height:1;}
+.hst .l{font-family:var(--mono);font-size:.38rem;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-top:5px;}
+
+/* ── QUICK NAV ── */
+.qnav{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:24px;}
+.qnc{background:var(--bg2);padding:20px 16px;cursor:pointer;transition:var(--tr);position:relative;}
+.qnc:hover{background:var(--bg3);}
+.qnc:hover .qi{transform:translateY(-3px);}
+.qnc:active{background:var(--bg4);}
+.qnc .qi{font-size:1.5rem;display:block;margin-bottom:10px;transition:var(--tr);}
+.qnc .ql{font-size:.7rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.5px;}
+.qnc .qd{font-family:var(--mono);font-size:.46rem;color:var(--mut);margin-top:3px;text-transform:uppercase;letter-spacing:.8px;}
+.qnc::after{content:'↗';position:absolute;top:14px;right:14px;font-size:.7rem;color:var(--mutl);transition:var(--tr);}
+.qnc:hover::after{color:var(--zo);transform:translate(2px,-2px);}
+
+/* ── ALERTS ── */
+.alert{border-radius:var(--r);padding:12px 16px;margin-bottom:8px;font-size:.72rem;border-left:3px solid;display:flex;gap:10px;align-items:flex-start;transition:var(--tr);background:var(--bg3);}
+.alert:hover{transform:translateX(4px);}
+.ai2{font-size:.95rem;flex-shrink:0;margin-top:1px;}
+.ac strong{display:block;font-family:var(--mono);font-size:.48rem;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px;font-weight:700;}
+.ac span{font-size:.68rem;color:var(--mut);}
+.ar{border-color:#EF4444;}.ar strong{color:#EF4444;}
+.ao{border-color:var(--zo);}.ao strong{color:var(--zo);}
+.ag{border-color:var(--acid2);}.ag strong{color:var(--acid2);}
+body.light .ag strong{color:#5A6600;}
+.at{border-color:var(--zo2);}.at strong{color:var(--zo2);}
+.ab{border-color:#60A5FA;}.ab strong{color:#60A5FA;}
+
+/* ── MAP ── */
+.map-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:28px;}
+.map-hint{text-align:center;background:rgba(241,88,36,.08);border:1px solid rgba(241,88,36,.2);border-radius:var(--r);padding:10px 18px;font-family:var(--mono);font-size:.55rem;color:var(--zo);font-weight:700;margin-bottom:28px;text-transform:uppercase;letter-spacing:1.2px;}
+
+/* SVG-style site map */
+.site-map-container{position:relative;width:100%;max-width:860px;margin:0 auto;}
+.site-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;grid-template-rows:auto;gap:10px;}
+
+/* Zone tiles */
+.zt{border-radius:14px;padding:16px 14px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.3,.64,1);border:2px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;user-select:none;position:relative;overflow:hidden;min-height:90px;}
+.zt::before{content:'';position:absolute;inset:0;opacity:0;transition:.25s;background:rgba(255,255,255,.06);}
+.zt:hover::before{opacity:1;}
+.zt:hover{transform:translateY(-5px) scale(1.03);box-shadow:0 16px 40px rgba(0,0,0,.5);}
+.zt:active{transform:scale(.96);}
+.zt.pulsing::after{content:'';position:absolute;inset:-2px;border-radius:16px;border:2px solid currentColor;animation:pulse-ring 1.8s ease-out infinite;opacity:0;}
+@keyframes pulse-ring{0%{transform:scale(1);opacity:.6;}100%{transform:scale(1.1);opacity:0;}}
+.zt.selected{border-color:rgba(255,255,255,.8)!important;box-shadow:0 0 0 3px rgba(255,255,255,.15),0 16px 40px rgba(0,0,0,.5)!important;}
+.zt .zi{font-size:1.6rem;display:block;margin-bottom:8px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));}
+.zt .zl{font-family:var(--mono);font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;line-height:1.4;}
+.zt .zs{font-family:var(--mono);font-size:.45rem;opacity:.65;margin-top:4px;letter-spacing:.5px;}
+
+/* span helpers */
+.span2{grid-column:span 2;}
+.span3{grid-column:span 3;}
+.span4{grid-column:span 4;}
+
+/* Zone colours — richer, more distinct */
+.z-road{background:linear-gradient(135deg,#1a1a1a,#242424);color:#888;border-color:#333!important;cursor:default;}
+body.light .z-road{background:linear-gradient(135deg,#e2e0d8,#eae8e0);color:#888;border-color:#ccc!important;}
+
+.z-entry{background:linear-gradient(145deg,#7c1d06,#c2380d);color:#ffe0d4;border-color:#e04010!important;box-shadow:inset 0 1px 0 rgba(255,120,60,.2);}
+
+.z-fnb{background:linear-gradient(145deg,#7c4a00,#c47800);color:#fff3d4;border-color:#d98a00!important;box-shadow:inset 0 1px 0 rgba(255,200,60,.2);}
+
+.z-wash{background:linear-gradient(145deg,#063060,#0d5090);color:#d4eaff;border-color:#1a6ab0!important;box-shadow:inset 0 1px 0 rgba(80,160,255,.2);}
+
+.z-cA{background:linear-gradient(145deg,#3d1278,#6a24c8);color:#ede0ff;border-color:#8040e0!important;box-shadow:inset 0 1px 0 rgba(160,100,255,.25);}
+
+.z-cB{background:linear-gradient(145deg,#2a0a60,#4a18a8);color:#ddd4ff;border-color:#6030c8!important;box-shadow:inset 0 1px 0 rgba(130,80,255,.2);}
+
+.z-cC{background:linear-gradient(145deg,#064c20,#0d8038);color:#d4ffe4;border-color:#1a9a48!important;box-shadow:inset 0 1px 0 rgba(60,200,100,.2);}
+
+.z-cD{background:linear-gradient(145deg,#043818,#087030);color:#c8ffd8;border-color:#0e8a3a!important;box-shadow:inset 0 1px 0 rgba(40,180,80,.2);}
+
+.z-fire{background:linear-gradient(145deg,#7a0a0a,#c01818);color:#ffe4e4;border-color:#d42020!important;box-shadow:inset 0 1px 0 rgba(255,80,80,.2);}
+
+.z-util{background:linear-gradient(135deg,#1c1c1c,#262626);color:#666;border-color:#333!important;}
+body.light .z-util{background:linear-gradient(135deg,#dddcd4,#e6e4dc);color:#777;border-color:#ccc!important;}
+
+.z-path{background:transparent;color:var(--mutl);border:2px dashed var(--border)!important;cursor:default;min-height:40px;}
+.z-buf{background:linear-gradient(135deg,#14532d,#166534,#15803d);color:#bbf7d0;border:2px solid #22c55e!important;cursor:default;box-shadow:inset 0 1px 0 rgba(134,239,172,.25),0 4px 20px rgba(22,101,52,.4);}
+
+/* connector arrows between rows */
+.map-connector{display:flex;align-items:center;justify-content:center;padding:2px 0;color:var(--mutl);font-size:.7rem;letter-spacing:4px;opacity:.5;}
+
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;justify-content:center;}
+.leg{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.5rem;color:var(--mut);font-weight:700;padding:5px 12px;background:var(--bg3);border-radius:20px;text-transform:uppercase;letter-spacing:.5px;border:1px solid var(--border);transition:var(--tr);}
+.leg:hover{border-color:var(--border2);color:var(--white);}
+.ld{width:10px;height:10px;border-radius:50%;}
+
+/* ── ZONE MODAL ── */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(16px);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:.18s;}
+.ov.open{opacity:1;visibility:visible;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r2);width:100%;max-width:520px;max-height:88vh;overflow-y:auto;transform:scale(.92) translateY(20px);transition:all .28s cubic-bezier(.34,1.4,.64,1);}
+.ov.open .modal{transform:scale(1) translateY(0);}
+.mh{padding:26px 26px 18px;position:relative;border-bottom:1px solid var(--border);}
+.macc{position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;}
+.mcl{position:absolute;top:16px;right:16px;width:30px;height:30px;border-radius:var(--r);background:var(--bg3);border:1px solid var(--border2);cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;color:var(--mut);transition:var(--tr);}
+.mcl:hover{color:var(--white);border-color:var(--white);}
+.mico{font-size:2.4rem;display:block;margin-bottom:10px;}
+.mttl{font-size:1.4rem;font-weight:700;color:var(--white);margin-bottom:4px;letter-spacing:-0.5px;}
+.msb{font-family:var(--mono);font-size:.5rem;color:var(--mut);text-transform:uppercase;letter-spacing:1px;}
+.mb{padding:20px 26px 28px;}
+.mdes{font-size:.76rem;color:#888;line-height:1.9;margin-bottom:16px;}
+body.light .mdes{color:#555;}
+.mtgs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;}
+.mtg{background:var(--bg3);border:1px solid var(--border2);color:var(--mut);font-family:var(--mono);font-size:.44rem;font-weight:700;padding:3px 10px;border-radius:2px;text-transform:uppercase;letter-spacing:.5px;}
+.mfcts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mfc{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:12px;}
+.mfc .fk{font-family:var(--mono);font-size:.44rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px;}
+.mfc .fv{font-size:.82rem;font-weight:700;color:var(--white);}
+.mnotes{background:rgba(241,88,36,.06);border:1px solid rgba(241,88,36,.15);border-radius:var(--r);padding:14px;margin-top:14px;}
+.mnotes h5{font-family:var(--mono);font-size:.46rem;font-weight:700;color:var(--zo);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.mnotes li{font-size:.7rem;color:var(--mut);line-height:2;list-style:none;padding-left:12px;position:relative;}
+.mnotes li::before{content:'→';position:absolute;left:0;color:var(--zo);opacity:.6;}
+
+/* ── CONFIG ── */
+.cfg-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:12px;}
+.cfg-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
+.cfg-row:last-child{border-bottom:none;}
+.cfg-label{font-size:.78rem;font-weight:600;color:var(--white);}
+.cfg-sub{font-family:var(--mono);font-size:.48rem;color:var(--mut);margin-top:3px;text-transform:uppercase;letter-spacing:.5px;}
+.cfg-ctrl{display:flex;align-items:center;gap:8px;}
+.spinner{display:flex;align-items:center;border:1px solid var(--border2);border-radius:var(--r);overflow:hidden;}
+.spinner button{background:var(--bg3);border:none;width:30px;height:30px;cursor:pointer;font-size:.9rem;color:var(--mut);transition:var(--tr);display:flex;align-items:center;justify-content:center;font-weight:700;}
+.spinner button:hover{background:var(--zo);color:#fff;}
+.spinner input{width:50px;height:30px;border:none;border-left:1px solid var(--border);border-right:1px solid var(--border);text-align:center;font-size:.82rem;font-weight:700;color:var(--white);font-family:var(--mono);background:var(--bg2);outline:none;}
+.cfg-badge{font-family:var(--mono);font-size:.48rem;font-weight:700;padding:4px 10px;border-radius:2px;background:rgba(241,88,36,.1);color:var(--zo);border:1px solid rgba(241,88,36,.2);}
+.derived-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:14px;}
+.derived-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px;transition:var(--tr);}
+.derived-item:hover{border-color:var(--zo);}
+.derived-item .dk{font-family:var(--mono);font-size:.44rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;}
+.derived-item .dv{font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--zo);}
+body.dark .derived-item .dv{color:var(--acid);}
+.derived-item .ds{font-family:var(--mono);font-size:.42rem;color:var(--mutl);margin-top:4px;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:.72rem;}
+th{background:var(--bg3);color:var(--mut);padding:10px 12px;text-align:left;font-family:var(--mono);font-weight:700;font-size:.46rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border);}
+td{padding:11px 12px;border-bottom:1px solid var(--border);color:#888;vertical-align:top;}
+body.light td{color:#666;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--bg3);color:var(--white);}
+
+/* ── FLOW ── */
+.fw{position:relative;padding-left:36px;}
+.fw::before{content:'';position:absolute;left:14px;top:14px;bottom:14px;width:1px;background:linear-gradient(180deg,var(--zo),transparent);}
+.fs{position:relative;margin-bottom:8px;}
+.fb{position:absolute;left:-36px;width:28px;height:28px;border-radius:var(--r);background:var(--zo);color:#fff;font-family:var(--mono);font-size:.58rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.fc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:13px 16px;transition:var(--tr);}
+.fc:hover{border-color:var(--zo);transform:translateX(4px);}
+.fc h4{font-size:.78rem;font-weight:700;color:var(--white);margin-bottom:3px;}
+.fc p{font-size:.68rem;color:var(--mut);line-height:1.6;}
+
+/* ── ORG ── */
+.ow{text-align:center;}
+.on{display:inline-block;border-radius:var(--r);padding:8px 14px;font-family:var(--mono);font-size:.58rem;font-weight:700;margin:3px;border:1px solid;text-transform:uppercase;letter-spacing:.5px;}
+.on.top{background:rgba(241,88,36,.15);color:var(--zo);border-color:rgba(241,88,36,.3);}
+.on.mid{background:var(--bg3);color:var(--white);border-color:var(--border2);}
+.on.sub{background:transparent;color:var(--mut);border-color:var(--border);font-size:.52rem;}
+.orr{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:6px 0;}
+.ol{width:1px;height:16px;background:var(--border);margin:0 auto;}
+.ob{display:flex;flex-direction:column;align-items:center;}
+
+/* ── BUDGET ── */
+.bsum{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin-bottom:16px;}
+.bsgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-top:16px;}
+.bsi{background:var(--bg3);padding:16px;transition:var(--tr);cursor:default;}
+.bsi:hover{background:var(--bg4);}
+.bsi .bk{font-family:var(--mono);font-size:.44rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;}
+.bsi .bv{font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--white);}
+.bsi .bv.g{color:var(--acid2);}
+body.light .bsi .bv.g{color:#5A6600;}
+.bsi .bv.r{color:#f87171;}
+.brow{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:var(--r);border:1px solid var(--border);margin-bottom:6px;background:var(--bg2);transition:var(--tr);}
+.brow:hover{border-color:var(--border2);background:var(--bg3);}
+.bico{font-size:1.1rem;flex-shrink:0;}
+.binf{flex:1;}
+.binf .bn{font-size:.74rem;font-weight:700;color:var(--white);}
+.binf .bs{font-family:var(--mono);font-size:.5rem;color:var(--mut);margin-top:2px;}
+.bamt{font-family:var(--mono);font-size:.84rem;font-weight:700;color:var(--white);}
+.btyp{font-family:var(--mono);font-size:.44rem;font-weight:700;padding:2px 8px;border-radius:2px;text-transform:uppercase;letter-spacing:.5px;}
+.btyp.exp{background:rgba(248,113,113,.1);color:#f87171;border:1px solid rgba(248,113,113,.2);}
+.btyp.inc{background:rgba(200,232,50,.1);color:var(--acid2);border:1px solid rgba(200,232,50,.2);}
+body.light .btyp.inc{color:#5A6600;border-color:rgba(90,102,0,.2);}
+.bdel{background:none;border:none;cursor:pointer;color:var(--mutl);font-size:.85rem;padding:4px 7px;border-radius:4px;transition:var(--tr);opacity:0;}
+.brow:hover .bdel{opacity:1;}
+.bdel:hover{color:#f87171;}
+.addbtn{width:100%;padding:12px;border:1px dashed var(--border2);border-radius:var(--r);background:none;color:var(--mut);font-family:var(--mono);font-size:.52rem;font-weight:700;cursor:pointer;transition:var(--tr);text-transform:uppercase;letter-spacing:.8px;margin-top:6px;}
+.addbtn:hover{border-color:var(--zo);color:var(--zo);background:rgba(241,88,36,.04);}
+
+/* ── SCHEDULE ── */
+.dtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+.dtab{padding:7px 16px;border-radius:var(--r);border:1px solid var(--border);background:var(--bg2);font-family:var(--mono);font-size:.52rem;font-weight:700;cursor:pointer;transition:var(--tr);text-transform:uppercase;letter-spacing:.5px;color:var(--mut);}
+.dtab:hover{border-color:var(--border2);color:var(--white);}
+.dtab.active{border-color:var(--zo);background:rgba(241,88,36,.08);color:var(--zo);}
+.sslot{display:flex;gap:14px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--border);transition:var(--tr);}
+.sslot:hover{padding-left:6px;}
+.sslot:last-of-type{border-bottom:none;}
+.stime{font-family:var(--mono);font-size:.6rem;font-weight:700;color:var(--zo);width:72px;flex-shrink:0;margin-top:2px;}
+.scon h4{font-size:.78rem;font-weight:700;color:var(--white);margin-bottom:3px;}
+.scon p{font-size:.66rem;color:var(--mut);}
+.sbdg{font-family:var(--mono);font-size:.44rem;font-weight:700;padding:2px 8px;border-radius:2px;display:inline-block;margin-top:5px;text-transform:uppercase;letter-spacing:.5px;}
+.s-ops{background:rgba(99,102,241,.12);color:#818CF8;}
+.s-fnb{background:rgba(217,119,6,.12);color:#F59E0B;}
+.s-soc{background:rgba(52,211,153,.12);color:#34D399;}
+.s-all{background:rgba(241,88,36,.1);color:var(--zo2);}
+
+/* ── PARTNERS ── */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
+.pcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:26px;transition:var(--tr);position:relative;display:flex;flex-direction:column;gap:0;}
+.pcard:hover{border-color:var(--border2);box-shadow:0 6px 32px rgba(0,0,0,.25);}
+.plogo{width:56px;height:56px;border-radius:var(--r);background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:18px;flex-shrink:0;}
+.pname{font-size:1.15rem;font-weight:700;color:var(--white);margin-bottom:6px;display:block;line-height:1.3;}
+.prole{font-family:var(--mono);font-size:.65rem;color:var(--zo);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:12px;font-weight:700;}
+.pdesc{font-size:.88rem;color:var(--mut);line-height:1.7;display:block;margin-bottom:16px;}
+.ptyp{font-family:var(--mono);font-size:.55rem;font-weight:700;padding:5px 13px;border-radius:3px;display:inline-block;margin-top:auto;text-transform:uppercase;letter-spacing:.6px;}
+.pcdel{position:absolute;top:14px;right:14px;background:none;border:none;cursor:pointer;color:var(--mutl);font-size:1rem;padding:5px 7px;border-radius:4px;transition:var(--tr);opacity:0;}
+.pcard:hover .pcdel{opacity:1;}
+.pcdel:hover{color:#f87171;}
+.padd{border:2px dashed var(--border2);border-radius:var(--r2);padding:24px;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:var(--tr);min-height:200px;font-family:var(--mono);}
+.padd:hover{border-color:var(--zo);background:rgba(241,88,36,.04);}
+
+/* ── EXPAND ── */
+.expc{border:1px solid var(--border);border-radius:var(--r);padding:32px;color:var(--white);background:var(--bg2);margin-bottom:16px;position:relative;overflow:hidden;}
+.expc::before{content:'200';position:absolute;right:-10px;bottom:-30px;font-family:var(--mono);font-size:9rem;font-weight:700;color:var(--border);line-height:1;pointer-events:none;}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;}
+.ci{border-radius:var(--r);padding:14px;transition:var(--tr);cursor:default;border:1px solid;}
+.ci.cur{background:var(--bg3);border-color:var(--border);}
+.ci.exv{background:rgba(241,88,36,.06);border-color:rgba(241,88,36,.2);}
+.ci .ck{font-family:var(--mono);font-size:.44rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;}
+.ci .cv{font-size:.92rem;font-weight:700;color:var(--white);}
+.ci.exv .cv{color:var(--zo2);}
+
+/* ── CHECKLIST ── */
+.cks h4{font-family:var(--mono);font-size:.5rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1px;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:8px;}
+.ckr{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r);cursor:pointer;transition:var(--tr);}
+.ckr:hover{background:var(--bg3);}
+.ckr input[type=checkbox]{width:15px;height:15px;accent-color:var(--zo);cursor:pointer;flex-shrink:0;}
+.ckr label{font-size:.72rem;color:#888;cursor:pointer;line-height:1.4;}
+body.light .ckr label{color:#555;}
+.ckr input:checked+label{text-decoration:line-through;color:var(--mutl);}
+
+/* ── CLUSTER CARDS ── */
+.cc{border-radius:var(--r);padding:18px;color:var(--white);position:relative;overflow:hidden;transition:var(--tr);border:1px solid;}
+.cc:hover{transform:translateY(-4px);}
+.cc::after{content:'⛺';position:absolute;right:-8px;bottom:-12px;font-size:3.5rem;opacity:.08;}
+.cc h4{font-size:.78rem;font-weight:700;margin-bottom:4px;}
+.cc .ctg{font-family:var(--mono);font-size:.44rem;background:rgba(255,255,255,.1);border-radius:2px;display:inline-block;padding:2px 9px;margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;}
+.cc li{font-size:.64rem;opacity:.7;line-height:1.8;list-style:none;padding-left:12px;position:relative;}
+.cc li::before{content:'—';position:absolute;left:0;opacity:.4;}
+
+/* ── INFO ROWS ── */
+.irow{display:flex;gap:10px;align-items:flex-start;padding:11px 14px;border-radius:var(--r);background:var(--bg3);border:1px solid var(--border);margin-bottom:7px;transition:var(--tr);}
+.irow:hover{border-color:var(--border2);}
+.irow .iri{font-size:1rem;flex-shrink:0;margin-top:1px;}
+.irow .irt strong{font-size:.72rem;color:var(--white);display:block;margin-bottom:2px;font-weight:700;}
+.irow .irt span{font-family:var(--mono);font-size:.52rem;color:var(--mut);}
+
+/* ── POWER ── */
+.pwr-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r);transition:.15s;}
+.pwr-row:hover{background:var(--bg3);}
+.pwr-label{font-size:.68rem;color:#888;width:230px;flex-shrink:0;}
+body.light .pwr-label{color:#666;}
+.pwr-bar-wrap{flex:1;background:var(--bg4);border-radius:20px;height:4px;overflow:hidden;}
+.pwr-bar{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--zo3),var(--zo2));width:0;transition:width 1.2s cubic-bezier(.34,1.4,.64,1);}
+.pwr-val{font-family:var(--mono);font-size:.58rem;font-weight:700;color:var(--zo);width:48px;text-align:right;flex-shrink:0;}
+
+/* ── INPUT MODAL ── */
+.iov{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(12px);z-index:600;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:.18s;}
+.iov.open{opacity:1;visibility:visible;}
+.imod{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r2);width:100%;max-width:400px;padding:28px;transform:scale(.94);transition:all .26s cubic-bezier(.34,1.4,.64,1);}
+.iov.open .imod{transform:scale(1);}
+.imod h3{font-size:.92rem;font-weight:700;color:var(--white);margin-bottom:18px;text-transform:uppercase;letter-spacing:.5px;}
+.ifd{margin-bottom:12px;}
+.ifd label{display:block;font-family:var(--mono);font-size:.48rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;}
+.ifd input,.ifd select{width:100%;padding:10px 12px;border:1px solid var(--border2);border-radius:var(--r);font-size:.76rem;font-family:var(--font);color:var(--white);outline:none;transition:var(--tr);background:var(--bg3);}
+.ifd input:focus,.ifd select:focus{border-color:var(--zo);}
+.ifd select option{background:var(--bg3);}
+.ibns{display:flex;gap:8px;margin-top:18px;}
+.ibns button{flex:1;padding:11px;border-radius:var(--r);font-family:var(--mono);font-size:.6rem;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;transition:var(--tr);}
+.iconf{background:var(--zo);color:#fff;border:none;}
+.iconf:hover{background:var(--zo2);}
+.icanc{background:transparent;color:var(--mut);border:1px solid var(--border2);}
+.icanc:hover{border-color:var(--white);color:var(--white);}
+
+/* ── EDITABLE ── */
+.editable{cursor:text;border-radius:3px;padding:1px 4px;margin:-1px -4px;transition:var(--tr);position:relative;display:inline;}
+.editable:hover{background:rgba(241,88,36,.08);outline:1px dashed rgba(241,88,36,.25);}
+.editable:focus{background:rgba(241,88,36,.12);outline:1px solid var(--zo);border-radius:3px;}
+.cluster-name{cursor:text;}
+
+input[type=number]{-moz-appearance:textfield;}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
+input[type=date]{color-scheme:dark;}
+body.light input[type=date]{color-scheme:light;}
+body.light .ifd input,body.light .ifd select{color:#1a1a1a;}
+body.light .spinner input{color:#1a1a1a;}
+
+@media(max-width:600px){
+  .hero h2{font-size:2.4rem;}
+  .mz{min-height:44px;}
+  .cgrid{grid-template-columns:1fr;}
+  .mfcts{grid-template-columns:1fr;}
+  .cd-unit .n{font-size:1.1rem;}
+  .cd-unit{min-width:40px;}
+}
+</style>
+</head>
+<body class="dark">
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker-inner">
+    <span>Zo Basecamp · Ziro Valley · September 2026</span>
+    <span>Where the mountains meet the music 🏔</span>
+    <span>60 Tents · 120 Happy Campers · 4 Cozy Clusters</span>
+    <span>Crafted with love by Zo Trips ✦</span>
+    <span>Ziro Festival of Music · Your home in the hills</span>
+    <span>Zo Basecamp · Ziro Valley · September 2026</span>
+    <span>Where the mountains meet the music 🏔</span>
+    <span>60 Tents · 120 Happy Campers · 4 Cozy Clusters</span>
+    <span>Crafted with love by Zo Trips ✦</span>
+    <span>Ziro Festival of Music · Your home in the hills</span>
+  </div>
+</div>
+
+<header>
+  <div class="logo">
+    <div class="lmark">Z</div>
+    <div class="ltext">
+      <h1><span class="editable" contenteditable spellcheck="false">Zo Basecamp</span></h1>
+      <p><span class="editable" contenteditable spellcheck="false">Ziro Valley · Festival Site</span></p>
+    </div>
+  </div>
+  <div class="hright">
+    <span class="hpill hot" id="hp-tents">60 Tents</span>
+    <span class="hpill hot" id="hp-pax">120 Guests</span>
+    <span class="hpill" id="hp-staff">38 Staff</span>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+      <span class="tt-icon" id="tt-icon">🌙</span>
+      <div class="tt-track"><div class="tt-knob"></div></div>
+      <span class="tt-icon" id="tt-icon2">☀️</span>
+    </div>
+    <button class="cfg-btn" id="dl-btn" onclick="downloadHTML()" style="background:var(--bg3);color:var(--zo);border:1px solid var(--zo);">⬇ Save HTML</button>
+    <button class="cfg-btn" onclick="showTab('config',document.querySelector('[data-tab=config]'))">⚙ Config</button>
+  </div>
+</header>
+
+<!-- COUNTDOWN -->
+<div class="cd-band">
+  <div class="cd-left">
+    <div>
+      <div class="cd-label">🎶 Time until Ziro Festival of Music</div>
+      <div style="font-family:var(--mono);font-size:.42rem;color:var(--mutl);margin-top:2px;">Target: <button style="background:none;border:none;font-family:var(--mono);font-size:.42rem;color:var(--mut);cursor:pointer;border-bottom:1px dashed var(--mutl);padding-bottom:1px;" onclick="showTab('config',document.querySelector('[data-tab=config]'))" id="cd-date-lbl">25 Sep 2025</button></div>
+    </div>
+    <div class="cd-units">
+      <div class="cd-unit"><div class="n" id="cd-d">--</div><div class="l">Days</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="n" id="cd-h">--</div><div class="l">Hrs</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="n" id="cd-m">--</div><div class="l">Min</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="n" id="cd-s">--</div><div class="l">Sec</div></div>
+    </div>
+  </div>
+  <div class="cd-right">
+    <span class="cd-weeks" id="cd-weeks"></span>
+    <span class="cd-tag comfort" id="cd-urgency">🟢 Planning Mode</span>
+  </div>
+</div>
+
+<div class="nav">
+  <div class="nav-inner">
+    <div class="ntab active" data-tab="overview" onclick="showTab('overview',this)">🏠 Overview</div>
+    <div class="ntab" data-tab="map" onclick="showTab('map',this)">🗺 Map</div>
+    <div class="ntab" data-tab="zones" onclick="showTab('zones',this)">📍 Zones</div>
+    <div class="ntab" data-tab="flow" onclick="showTab('flow',this)">🚶 Flow</div>
+    <div class="ntab" data-tab="staff" onclick="showTab('staff',this)">👥 Team</div>
+    <div class="ntab" data-tab="infra" onclick="showTab('infra',this)">⚡ Infra</div>
+    <div class="ntab" data-tab="budget" onclick="showTab('budget',this)">💰 Budget</div>
+    <div class="ntab" data-tab="schedule" onclick="showTab('schedule',this)">📅 Schedule</div>
+    <div class="ntab" data-tab="partners" onclick="showTab('partners',this)">🤝 Partners</div>
+    <div class="ntab" data-tab="expand" onclick="showTab('expand',this)">📈 Expand</div>
+    <div class="ntab" data-tab="ops" onclick="showTab('ops',this)">✅ Ops</div>
+    <div class="ntab" data-tab="config" onclick="showTab('config',this)">⚙ Config</div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- OVERVIEW -->
+<div class="panel active" id="tab-overview">
+  <div class="hero">
+    <div class="hero-tag">Your Festival Home in the Hills</div>
+    <h2><span class="editable" contenteditable spellcheck="false">Zo Basecamp</span>,<br><em><span class="editable" contenteditable spellcheck="false">Ziro Valley</span></em></h2>
+    <div class="hero-sub"><span class="editable" contenteditable spellcheck="false">Arunachal Pradesh · Cozy Premium Camping · By Zo Trips</span></div>
+    <div class="hstats">
+      <div class="hst"><div class="n" id="ov-tents">60</div><div class="l">Cozy Tents</div></div>
+      <div class="hst"><div class="n" id="ov-pax">120</div><div class="l">Happy Campers</div></div>
+      <div class="hst"><div class="n" id="ov-clusters">4</div><div class="l">Neighbourhoods</div></div>
+      <div class="hst"><div class="n" id="ov-wc">3</div><div class="l">Wash Blocks</div></div>
+      <div class="hst"><div class="n" id="ov-pow">35kW</div><div class="l">Powered Up</div></div>
+      <div class="hst"><div class="n" id="ov-staff">38</div><div class="l">Crew Members</div></div>
+    </div>
+  </div>
+  <div class="qnav">
+    <div class="qnc" onclick="showTab('map',document.querySelector('[data-tab=map]'))"><span class="qi">🗺</span><div class="ql">Site Map</div><div class="qd">See the full layout</div></div>
+    <div class="qnc" onclick="showTab('zones',document.querySelector('[data-tab=zones]'))"><span class="qi">📍</span><div class="ql">Zones</div><div class="qd">What's where & why</div></div>
+    <div class="qnc" onclick="showTab('flow',document.querySelector('[data-tab=flow]'))"><span class="qi">🚶</span><div class="ql">Guest Flow</div><div class="qd">Arrival to departure</div></div>
+    <div class="qnc" onclick="showTab('staff',document.querySelector('[data-tab=staff]'))"><span class="qi">👥</span><div class="ql">The Crew</div><div class="qd">Who does what</div></div>
+    <div class="qnc" onclick="showTab('infra',document.querySelector('[data-tab=infra]'))"><span class="qi">⚡</span><div class="ql">Infrastructure</div><div class="qd">Power, water & more</div></div>
+    <div class="qnc" onclick="showTab('budget',document.querySelector('[data-tab=budget]'))"><span class="qi">💰</span><div class="ql">Budget</div><div class="qd">Costs & revenue</div></div>
+    <div class="qnc" onclick="showTab('schedule',document.querySelector('[data-tab=schedule]'))"><span class="qi">📅</span><div class="ql">Schedule</div><div class="qd">Day-by-day runsheet</div></div>
+    <div class="qnc" onclick="showTab('config',document.querySelector('[data-tab=config]'))"><span class="qi">⚙</span><div class="ql">Settings</div><div class="qd">Tweak the numbers</div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct">🚨 Things to Sort Out</div>
+      <div class="alert at"><span class="ai2">⛺</span><div class="ac"><strong>Need 10 More Tents</strong><span>50 on hand — source 10 more to hit the full 60</span></div></div>
+      <div class="alert ao"><span class="ai2">💧</span><div class="ac"><strong>Confirm Water Supply</strong><span>Verify the bore/spring can handle 120 guests + 38 crew daily</span></div></div>
+      <div class="alert ao"><span class="ai2">🌲</span><div class="ac"><strong>Treeline Buffer Needed</strong><span>Natural noise break required between bonfire & quiet clusters</span></div></div>
+      <div class="alert ar"><span class="ai2">📋</span><div class="ac"><strong>Permits Not Yet Done</strong><span>Forest & event permits pending — check the 200 pax threshold</span></div></div>
+      <div class="alert ag"><span class="ai2">✅</span><div class="ac"><strong>Land is Locked In 🎉</strong><span>2-year deal signed — Year 2 expansion can be planned right now</span></div></div>
+    </div>
+    <div class="card">
+      <div class="ct">📊 How We're Doing on Ratios</div>
+      <div id="ratio-display"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAP -->
+<div class="panel" id="tab-map">
+  <div class="map-wrap">
+    <div class="map-hint">✦ Click any zone to explore · Double-click labels to rename · Hover for details</div>
+    <div class="site-map-container">
+      <div class="site-grid">
+
+        <!-- Row 1: Road -->
+        <div class="zt z-road span4" style="min-height:54px;cursor:default;">
+          <span class="zl">🚌 &nbsp;<span class="editable cluster-name" contenteditable spellcheck="false" ondblclick="startEdit(event,this)" onclick="event.stopPropagation()">Approach Road · Parking &amp; Drop Zone</span></span>
+          <span class="zs">Vehicles stop here · Porters take over</span>
+        </div>
+
+        <!-- Row 2: Gate -->
+        <div class="zt z-path span1" style="min-height:54px;">
+          <span class="zl" style="font-size:.48rem;">— perimeter —</span>
+        </div>
+        <div class="zt z-entry span2 pulsing" onclick="openModal('entry',this)">
+          <span class="zi">🚪</span>
+          <span class="zl"><span class="editable" contenteditable spellcheck="false" ondblclick="startEdit(event,this)" onclick="event.stopPropagation()">Entry Gate · Reception · First Aid</span></span>
+          <span class="zs">Your Zo Basecamp journey starts here</span>
+        </div>
+        <div class="zt z-path span1" style="min-height:54px;">
+          <span class="zl" style="font-size:.48rem;">— perimeter —</span>
+        </div>
+
+        <!-- Row 3: F&B + Wash A -->
+        <div class="zt z-fnb span3" onclick="openModal('fnb',this)">
+          <span class="zi">🍽</span>
+          <span class="zl"><span class="editable" contenteditable spellcheck="false" ondblclick="startEdit(event,this)" onclick="event.stopPropagation()">F&amp;B Zone — Kitchen + Dining Hall</span></span>
+          <span class="zs">60 seats · 4-point buffet · 2 seatings</span>
+        </div>
+        <div class="zt z-wash span1" onclick="openModal('wash',this)">
+          <span class="zi">🚿</span>
+          <span class="zl">Wash A</span>
+          <span class="zs">Hot water · Near F&amp;B</span>
+        </div>
+
+        <!-- Row 4: Main pathway -->
+        <div class="zt z-path span4" style="min-height:36px;">
+          <span class="zl" style="letter-spacing:6px;opacity:.5;">— — — MAIN PATHWAY — — —</span>
+        </div>
+
+        <!-- Row 5: 4 clusters -->
+        <div class="zt z-cA" onclick="openModal('cA',this)">
+          <span class="zi">⛺</span>
+          <span class="zl"><span class="editable cluster-name" contenteditable spellcheck="false" data-cluster="A" ondblclick="startEdit(event,this)" onclick="event.stopPropagation()">Apatani</span></span>
+          <span class="zs"><span id="mz-cA-t">15</span>T · 🎉 Social</span>
+        </div>
+        <div class="zt z-cB" onclick="openModal('cB',this)">
+          <span class="zi">⛺</span>
+          <span class="zl"><span class="editable cluster-name" contenteditable spellcheck="false" data-cluster="B" ondblclick="startEdit(event,this)" onclick="event.stopPropagation()">Nyishi</span></span>
+          <span class="zs"><span id="mz-cB-t">15</span>T · 🎉 Social</span>
+        </div>
+        <div class="zt z-cC" onclick="openModal('cC',this)">
+          <span class="zi">⛺</span>
+          <span class="zl"><span class="editable cluster-name" contenteditable spellcheck="false" data-cluster="C" ondblclick="startEdit(event,this)" onclick="event.stopPropagation()">Galo</span></span>
+          <span class="zs"><span id="mz-cC-t">15</span>T · 🌙 Quiet</span>
+        </div>
+        <div class="zt z-cD" onclick="openModal('cD',this)">
+          <span class="zi">⛺</span>
+          <span class="zl"><span class="editable cluster-name" contenteditable spellcheck="false" data-cluster="D" ondblclick="startEdit(event,this)" onclick="event.stopPropagation()">Adi</span></span>
+          <span class="zs"><span id="mz-cD-t">15</span>T · 🌙 Quiet</span>
+        </div>
+
+        <!-- Row 6: Wash B + pathway + Wash C -->
+        <div class="zt z-wash span1" onclick="openModal('wash',this)">
+          <span class="zi">🚿</span>
+          <span class="zl">Wash B</span>
+          <span class="zs">Clusters A &amp; B</span>
+        </div>
+        <div class="zt z-path span2" style="min-height:60px;">
+          <span class="zl" style="font-size:.48rem;opacity:.4;">— pathway —</span>
+        </div>
+        <div class="zt z-wash span1" onclick="openModal('wash',this)">
+          <span class="zi">🚿</span>
+          <span class="zl">Wash C</span>
+          <span class="zs">Clusters C &amp; D</span>
+        </div>
+
+        <!-- Row 7: Treeline buffer -->
+        <div class="zt z-buf span4" style="min-height:56px;cursor:default;">
+          <span class="zl" style="font-size:.72rem;letter-spacing:4px;color:#86efac;">🌲 &nbsp; 🌲 &nbsp; 🌲 &nbsp;&nbsp; NATURAL TREELINE BUFFER &nbsp;&nbsp; 🌲 &nbsp; 🌲 &nbsp; 🌲</span>
+          <span class="zs" style="color:#bbf7d0;font-size:.52rem;margin-top:6px;letter-spacing:2px;">— ACOUSTIC BARRIER · SOCIAL ZONES ←→ QUIET ZONES —</span>
+        </div>
+
+        <!-- Row 8: Bonfire + Dry toilets -->
+        <div class="zt z-fire span3" onclick="openModal('fire',this)">
+          <span class="zi">🔥</span>
+          <span class="zl"><span class="editable" contenteditable spellcheck="false" ondblclick="startEdit(event,this)" onclick="event.stopPropagation()">Bonfire + Activity Zone</span></span>
+          <span class="zs">Live jams · Acoustic sets · Till 1 AM</span>
+        </div>
+        <div class="zt z-wash span1" onclick="openModal('wash',this)">
+          <span class="zi">🚽</span>
+          <span class="zl">Dry Toilets</span>
+          <span class="zs">Late-night use</span>
+        </div>
+
+        <!-- Row 9: Utilities -->
+        <div class="zt z-util span1" onclick="openModal('gen',this)" style="min-height:70px;">
+          <span class="zi">⚡</span>
+          <span class="zl">Generator</span>
+          <span class="zs">80m from tents</span>
+        </div>
+        <div class="zt z-util span1" onclick="openModal('water',this)" style="min-height:70px;">
+          <span class="zi">💧</span>
+          <span class="zl">Water</span>
+          <span class="zs">10,000L tank</span>
+        </div>
+        <div class="zt z-util span1" onclick="openModal('store',this)" style="min-height:70px;">
+          <span class="zi">📦</span>
+          <span class="zl">Store</span>
+          <span class="zs">Ops only</span>
+        </div>
+        <div class="zt z-util span1" style="min-height:70px;cursor:default;opacity:.5;">
+          <span class="zi">🏥</span>
+          <span class="zl">First Aid</span>
+          <span class="zs">At entry gate</span>
+        </div>
+
+      </div><!-- end site-grid -->
+    </div><!-- end site-map-container -->
+
+    <div class="legend">
+      <div class="leg"><div class="ld" style="background:#F15824;"></div>Entry</div>
+      <div class="leg"><div class="ld" style="background:#D97706;"></div>F&amp;B</div>
+      <div class="leg"><div class="ld" style="background:#3B82F6;"></div>Washrooms</div>
+      <div class="leg"><div class="ld" style="background:#8B5CF6;"></div>Social Clusters</div>
+      <div class="leg"><div class="ld" style="background:#059669;"></div>Quiet Clusters</div>
+      <div class="leg"><div class="ld" style="background:#DC2626;"></div>Bonfire</div>
+      <div class="leg"><div class="ld" style="background:#22c55e;"></div>Buffer</div>
+      <div class="leg"><div class="ld" style="background:#555;"></div>Utilities</div>
+    </div>
+  </div>
+</div>
+
+<!-- ZONES -->
+<div class="panel" id="tab-zones">
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card">
+      <div class="ct">⛺ Tent Clusters</div>
+      <div class="g2" style="gap:8px;">
+        <div class="cc" style="background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.25);">
+          <h4>A — <span class="editable cluster-name" contenteditable spellcheck="false" data-cluster="A">Apatani</span></h4>
+          <span class="ctg">Social</span>
+          <ul><li id="zc-cA-t">15 tents · 30 guests</li><li>Horseshoe arc layout</li><li>Closest to F&B + bonfire</li><li>3m side / 4m front-rear spacing</li><li>Cluster Captain assigned</li></ul>
+        </div>
+        <div class="cc" style="background:rgba(91,33,182,.12);border-color:rgba(91,33,182,.25);">
+          <h4>B — <span class="editable cluster-name" contenteditable spellcheck="false" data-cluster="B">Nyishi</span></h4>
+          <span class="ctg">Social</span>
+          <ul><li id="zc-cB-t">15 tents · 30 guests</li><li>Horseshoe arc layout</li><li>8–10m buffer from Cluster A</li><li>Festival-energy crowd</li><li>Cluster Captain assigned</li></ul>
+        </div>
+        <div class="cc" style="background:rgba(6,95,70,.18);border-color:rgba(6,95,70,.35);">
+          <h4>C — <span class="editable cluster-name" contenteditable spellcheck="false" data-cluster="C">Galo</span></h4>
+          <span class="ctg">Quiet</span>
+          <ul><li id="zc-cC-t">15 tents · 30 guests</li><li>Horseshoe arc layout</li><li>Natural treeline buffer</li><li>1 AM strict quiet protocol</li><li>Couples + early risers preferred</li></ul>
+        </div>
+        <div class="cc" style="background:rgba(6,78,59,.18);border-color:rgba(6,78,59,.35);">
+          <h4>D — <span class="editable cluster-name" contenteditable spellcheck="false" data-cluster="D">Adi</span></h4>
+          <span class="ctg">Quiet</span>
+          <ul><li id="zc-cD-t">15 tents · 30 guests</li><li>Horseshoe arc layout</li><li>120–150m+ from bonfire</li><li>Strictest quiet from 1 AM</li><li>Deepest privacy, max buffer</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">📏 Key Distances</div>
+      <table><tr><th>From → To</th><th>Distance</th><th>Why</th></tr>
+        <tr><td>Tent → Washroom</td><td><strong style="color:var(--white)">30–50m max</strong></td><td>Comfort standard</td></tr>
+        <tr><td>Tent → F&B</td><td>60–100m</td><td>Easy walk</td></tr>
+        <tr><td>Tent A/B → Bonfire</td><td>60m min</td><td>Noise + safety</td></tr>
+        <tr><td>Generator → Tent</td><td><strong style="color:var(--zo)">80m min</strong></td><td>Noise & fumes</td></tr>
+        <tr><td>Washroom → Kitchen</td><td>30m min</td><td>Hygiene</td></tr>
+        <tr><td>Parking → Gate</td><td>20–30m</td><td>Porter run</td></tr>
+        <tr><td>Cluster A → D</td><td>~80m</td><td>Social–quiet gradient</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="ct">🚿 Washroom Layout</div>
+      <div class="irow"><div class="iri">🅰</div><div class="irt"><strong>Wash Block A — Near F&B</strong><span id="wc-a-d">4 toilets · 2 showers · hot water · 1,000L tank</span></div></div>
+      <div class="irow"><div class="iri">🅱</div><div class="irt"><strong>Wash Block B — Cluster A/B Side</strong><span id="wc-b-d">4 toilets · 2 showers · gravity feed · 1,500L tank</span></div></div>
+      <div class="irow"><div class="iri">🅲</div><div class="irt"><strong>Wash Block C — Cluster C/D Side</strong><span id="wc-c-d">4 toilets · 2 showers · gravity feed · 1,500L tank</span></div></div>
+      <div class="irow"><div class="iri">🚽</div><div class="irt"><strong>Dry Toilets — Bonfire Zone</strong><span>2–4 units · eco composting · no plumbing · serviced daily</span></div></div>
+      <div class="alert at" style="margin:8px 0 0;"><span class="ai2">📊</span><div class="ac"><strong>Ratio</strong><span id="wc-ratio-t">1 toilet per 10 pax · 1 shower per 15 pax</span></div></div>
+    </div>
+    <div class="card"><div class="ct">🍽 F&B Zone</div>
+      <div class="irow"><div class="iri">🪑</div><div class="irt"><strong>60-Seat Dining Hall</strong><span>10 tables × 6 seats · tensile canopy · 2 seatings / 90 min</span></div></div>
+      <div class="irow"><div class="iri">🍳</div><div class="irt"><strong>Kitchen within 15m</strong><span>Induction + gas backup · 3–4 kitchen staff · separate staff dining</span></div></div>
+      <div class="irow"><div class="iri">🍱</div><div class="irt"><strong>4-Point Buffet</strong><span>4 concurrent service stations — prevents queuing and bottlenecks</span></div></div>
+      <div class="irow"><div class="iri">🌅</div><div class="irt"><strong>Ambient Dining Setup</strong><span>Warm Edison lighting, soft music — opens for welcome meal Day 1</span></div></div>
+      <div class="irow"><div class="iri">🧹</div><div class="irt"><strong>Daily Deep Clean</strong><span>Post each meal service — F&B + HK team joint responsibility</span></div></div>
+    </div>
+    <div class="card"><div class="ct">🚪 Entry & Reception</div>
+      <div class="irow"><div class="iri">🏹</div><div class="irt"><strong>Branded Zo Trips Arch</strong><span>Warm lighting · ambient music · sets tone as first impression</span></div></div>
+      <div class="irow"><div class="iri">🎫</div><div class="irt"><strong>Check-in ~3 min/guest</strong><span>Wristband + tent number · cluster colour-coded · site map + welcome briefing</span></div></div>
+      <div class="irow"><div class="iri">🩺</div><div class="irt"><strong>First Aid Station Co-located</strong><span>Altitude sickness kit · basic meds · hospital contact onboard · 24hr staffed</span></div></div>
+      <div class="irow"><div class="iri">📋</div><div class="irt"><strong>Ops Noticeboard</strong><span>Daily schedule · emergency numbers · weather · updated 2× per day</span></div></div>
+      <div class="irow"><div class="iri">🧭</div><div class="irt"><strong>Volunteer Orientation Walk</strong><span>5-min guided walk — washrooms, F&B, bonfire zone, muster point</span></div></div>
+    </div>
+    <div class="card"><div class="ct">🔥 Bonfire & Activity Zone</div>
+      <div class="irow"><div class="iri">🎸</div><div class="irt"><strong>Live Jamming & Acoustic Sessions</strong><span>Full PA on Generator 2 · acoustic guitars, djembe, jams · till 1 AM hard stop</span></div></div>
+      <div class="irow"><div class="iri">🌲</div><div class="irt"><strong>Treeline Noise Buffer</strong><span>Natural forest acts as acoustic barrier · 80m+ clearance from quiet clusters C + D</span></div></div>
+      <div class="irow"><div class="iri">🧯</div><div class="irt"><strong>Fire Safety Protocol</strong><span>Sand bucket + water drum at perimeter · Fire Marshal per shift · No open gas</span></div></div>
+      <div class="irow"><div class="iri">🚽</div><div class="irt"><strong>Dry Toilets On-site</strong><span>2–4 compost units — no need to walk back to main wash blocks at night</span></div></div>
+      <div class="irow"><div class="iri">👥</div><div class="irt"><strong>Cluster Captains Enforce 1 AM</strong><span>Each captain responsible for their guests transitioning to quiet zone rules</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FLOW -->
+<div class="panel" id="tab-flow">
+  <div class="card"><div class="ct">🚶 Guest Journey — Arrival to Departure</div>
+    <div class="fw">
+      <div class="fs"><div class="fb">1</div><div class="fc"><h4 class="editable" contenteditable spellcheck="false">🚌 Guwahati Pickup — 6 hr transfer</h4><p class="editable" contenteditable spellcheck="false">Bus/convoy by Zo Trips. Guest list confirmed. Luggage tagged at origin.</p></div></div>
+      <div class="fs"><div class="fb">2</div><div class="fc"><h4 class="editable" contenteditable spellcheck="false">🅿 Parking & Drop Zone</h4><p class="editable" contenteditable spellcheck="false">Vehicles outside perimeter. Porter team handles all luggage.</p></div></div>
+      <div class="fs"><div class="fb">3</div><div class="fc"><h4 class="editable" contenteditable spellcheck="false">🚪 Entry Gate — Zo Basecamp Arch</h4><p class="editable" contenteditable spellcheck="false">Branded arch, warm lighting, ambient music.</p></div></div>
+      <div class="fs"><div class="fb">4</div><div class="fc"><h4 class="editable" contenteditable spellcheck="false">🎫 Reception & Check-in (~3 min)</h4><p class="editable" contenteditable spellcheck="false">Wristband + tent number. Site map. 3-min welcome briefing per group.</p></div></div>
+      <div class="fs"><div class="fb">5</div><div class="fc"><h4 class="editable" contenteditable spellcheck="false">🧭 Volunteer Orientation Walk (5 min)</h4><p class="editable" contenteditable spellcheck="false">Shows washrooms, dining, bonfire zone, muster point.</p></div></div>
+      <div class="fs"><div class="fb">6</div><div class="fc"><h4 class="editable" contenteditable spellcheck="false">⛺ Tent Drop + Welcome Kit</h4><p class="editable" contenteditable spellcheck="false">Luggage delivered. Kit: snack, schedule, emergency number, mini map.</p></div></div>
+      <div class="fs"><div class="fb">7</div><div class="fc"><h4 class="editable" contenteditable spellcheck="false">🛁 60-Min Free Window</h4><p class="editable" contenteditable spellcheck="false">Freshen up, explore, settle in. Zero programming pressure.</p></div></div>
+      <div class="fs"><div class="fb">8</div><div class="fc"><h4 class="editable" contenteditable spellcheck="false">🍽 Welcome Dinner</h4><p class="editable" contenteditable spellcheck="false">First community dining. Ambient music, warm lighting, icebreakers.</p></div></div>
+      <div class="fs"><div class="fb">9</div><div class="fc"><h4 class="editable" contenteditable spellcheck="false">🎵 Festival Venue Transfer</h4><p class="editable" contenteditable spellcheck="false">Shuttle or guided walk. Zo Trips team leads each group.</p></div></div>
+      <div class="fs"><div class="fb">10</div><div class="fc"><h4 class="editable" contenteditable spellcheck="false">🔥 Bonfire + Night Activity</h4><p class="editable" contenteditable spellcheck="false">Jamming, acoustic, community fire. Till 12–1 AM.</p></div></div>
+      <div class="fs"><div class="fb">11</div><div class="fc"><h4 class="editable" contenteditable spellcheck="false">😴 Sleep — Quiet after 1 AM</h4><p class="editable" contenteditable spellcheck="false">Cluster captains ensure no noise spillover to quiet zones.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- STAFF -->
+<div class="panel" id="tab-staff">
+  <div class="card" style="margin-bottom:16px;"><div class="ct">👥 Org Chart</div>
+    <div class="ow">
+      <div class="on top"><span class="editable" contenteditable spellcheck="false">Zo Trips Leadership (2) — Decision Authority</span></div>
+      <div class="ol"></div>
+      <div class="on top"><span class="editable" contenteditable spellcheck="false">Camp Director (1) — Ground Command</span></div>
+      <div class="ol"></div>
+      <div class="orr">
+        <div class="ob"><div class="on mid"><span class="editable" contenteditable spellcheck="false">Ground Ops Lead</span></div><div class="on sub"><span class="editable" contenteditable spellcheck="false">Ops Volunteers (4–6)</span></div></div>
+        <div class="ob"><div class="on mid"><span class="editable" contenteditable spellcheck="false">Guest Exp. Lead</span></div><div class="on sub"><span class="editable" contenteditable spellcheck="false">4 Cluster Captains</span></div><div class="on sub"><span class="editable" contenteditable spellcheck="false">Reception (2)</span></div></div>
+        <div class="ob"><div class="on mid"><span class="editable" contenteditable spellcheck="false">F&B Lead</span></div><div class="on sub"><span class="editable" contenteditable spellcheck="false">Kitchen (3–4)</span></div><div class="on sub"><span class="editable" contenteditable spellcheck="false">Service (2–3)</span></div></div>
+        <div class="ob"><div class="on mid"><span class="editable" contenteditable spellcheck="false">HK Lead</span></div><div class="on sub"><span class="editable" contenteditable spellcheck="false">HK Team (3–4)</span></div></div>
+        <div class="ob"><div class="on mid"><span class="editable" contenteditable spellcheck="false">Security Lead</span></div><div class="on sub" id="sec-count"><span class="editable" contenteditable spellcheck="false">Security (5 local)</span></div></div>
+        <div class="ob"><div class="on mid"><span class="editable" contenteditable spellcheck="false">Technical</span></div><div class="on sub"><span class="editable" contenteditable spellcheck="false">Generator Op.</span></div><div class="on sub"><span class="editable" contenteditable spellcheck="false">Plumber (on-call)</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="ct">📋 Staff Register</div>
+      <table><tr><th>Role</th><th>Name</th><th>Contact</th><th>Notes</th></tr>
+        <tr><td>Camp Director</td><td contenteditable style="outline:none;min-width:80px;color:var(--white)"></td><td contenteditable style="outline:none;color:var(--white)"></td><td>Primary command</td></tr>
+        <tr><td>Zo Trips Lead</td><td contenteditable style="outline:none;color:var(--white)"></td><td contenteditable style="outline:none;color:var(--white)"></td><td>Escalation point</td></tr>
+        <tr><td>F&B Lead</td><td contenteditable style="outline:none;color:var(--white)"></td><td contenteditable style="outline:none;color:var(--white)"></td><td>Kitchen command</td></tr>
+        <tr><td>Security Lead</td><td contenteditable style="outline:none;color:var(--white)"></td><td contenteditable style="outline:none;color:var(--white)"></td><td>Local hire</td></tr>
+        <tr><td>Nearest Hospital</td><td contenteditable style="outline:none;color:var(--white)"></td><td contenteditable style="outline:none;color:var(--white)"></td><td contenteditable style="outline:none;color:var(--white)">__ km away</td></tr>
+        <tr><td>Generator Tech</td><td contenteditable style="outline:none;color:var(--white)"></td><td contenteditable style="outline:none;color:var(--white)"></td><td>On-call 24hr</td></tr>
+      </table>
+    </div>
+    <div class="card"><div class="ct">📊 Staffing Summary</div>
+      <div class="irow"><div class="iri">👑</div><div class="irt"><strong>Leadership (3)</strong><span>Zo Trips (2) + Camp Director (1)</span></div></div>
+      <div class="irow"><div class="iri">🏃</div><div class="irt"><strong>Ops & Guest Exp. (10–12)</strong><span>Ground Ops + 4 Cluster Captains + 2 Reception</span></div></div>
+      <div class="irow"><div class="iri">🍳</div><div class="irt"><strong id="fnb-sl">F&B Team (6–8)</strong><span>Lead + Kitchen + Service</span></div></div>
+      <div class="irow"><div class="iri">🧹</div><div class="irt"><strong>Housekeeping (4–5)</strong><span>Lead + 3–4 · tents, washrooms, pathways</span></div></div>
+      <div class="irow"><div class="iri">🔒</div><div class="irt"><strong id="sec-sl">Security (4–6)</strong><span>Local hires · perimeter patrol · gate control</span></div></div>
+      <div class="irow"><div class="iri">⚙</div><div class="irt"><strong>Technical (2–3)</strong><span>Generator op. (24hr) + plumber (on-call)</span></div></div>
+      <div class="alert at" style="margin-top:8px;margin-bottom:0;"><span class="ai2">📊</span><div class="ac"><strong>Total</strong><span id="staff-total-t">38 staff · ratio 1:3.2</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- INFRA -->
+<div class="panel" id="tab-infra">
+  <div class="card" style="margin-bottom:16px;"><div class="ct">⚡ Power Load Planning</div>
+    <div id="pw-rows"></div>
+    <div style="margin-top:14px;background:rgba(241,88,36,.06);border:1px solid rgba(241,88,36,.15);border-radius:var(--r);padding:16px;display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:180px;"><p style="font-family:var(--mono);font-size:.5rem;font-weight:700;color:var(--zo);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Generator Setup</p><p style="font-size:.76rem;color:#888;" id="gen-summary">Gen 1: <strong style="color:var(--white)">25 kVA</strong> — Critical · Gen 2: <strong style="color:var(--white)">15 kVA</strong> — Entertainment</p></div>
+      <div style="flex:1;min-width:180px;"><p style="font-family:var(--mono);font-size:.5rem;font-weight:700;color:var(--zo);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Key Rules</p><p style="font-size:.76rem;color:#888;">Never exceed <strong style="color:var(--white)">80% capacity</strong> · Fuel: <strong style="color:var(--white)">3-day supply</strong> min onsite</p></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="ct">💧 Water & Drainage</div><ul style="font-size:.74rem;color:#777;line-height:2.1;padding-left:16px;">
+      <li>Main storage: <strong style="color:var(--white)" id="water-cap">10,000L min</strong> (2-day buffer)</li>
+      <li>Elevated tanks: 1,000–2,000L per wash block</li><li>Gravity feed from elevated tanks</li>
+      <li>Hot water: solar/gas at Block A</li><li>Pump + generator backup for pressure</li>
+      <li>Drainage channels dug before guest arrival</li><li>Soakpit or biodigester for black water</li>
+    </ul></div>
+    <div class="card"><div class="ct">📡 Communications</div><ul style="font-size:.74rem;color:#777;line-height:2.1;padding-left:16px;">
+      <li>Walkie-talkies: all department heads (mandatory)</li><li>Mobile in Ziro: unreliable — don't depend on it</li>
+      <li>1 satellite phone or BSNL landline</li><li>Physical noticeboard at reception — updated 2×/day</li>
+      <li>Site map given to every guest at check-in</li><li>Separate radio channels: ops vs security</li>
+    </ul></div>
+    <div class="card"><div class="ct">🚌 Transport</div><ul style="font-size:.74rem;color:#777;line-height:2.1;padding-left:16px;">
+      <li>Pickup: Guwahati → Ziro convoy (~6 hrs)</li><li>Vehicle coordinator per bus</li>
+      <li>Luggage tagged at Guwahati, unloaded at perimeter</li><li>On-site: shuttle for festival venue transfers</li>
+      <li>Emergency vehicle access: always clear</li><li>No personal vehicles inside camp perimeter</li>
+    </ul></div>
+    <div class="card"><div class="ct">🔧 Tent Equipment</div><ul style="font-size:.74rem;color:#777;line-height:2.1;padding-left:16px;">
+      <li id="tent-status" style="color:var(--zo)">50 on hand — 10 more needed for 60 total</li>
+      <li>All tents: staked with guy ropes all sides</li><li>Inside: sleeping mat, linen, pillow, lantern</li>
+      <li>Welcome kit placed before arrival</li><li>Check every tent structure after night 1</li>
+      <li>Spare pegs + mallets in backend store</li>
+    </ul></div>
+  </div>
+</div>
+
+<!-- BUDGET -->
+<div class="panel" id="tab-budget">
+  <div class="bsum">
+    <p style="font-family:var(--mono);font-size:.48rem;color:var(--mut);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;">Financial Summary · <span id="b-pax-label">120 Pax · 3 Days</span></p>
+    <div class="bsgrid">
+      <div class="bsi"><div class="bk">Total Expenses</div><div class="bv r" id="b-exp">₹0</div></div>
+      <div class="bsi"><div class="bk">Total Income</div><div class="bv g" id="b-inc">₹0</div></div>
+      <div class="bsi"><div class="bk">Net P&L</div><div class="bv" id="b-pnl">₹0</div></div>
+      <div class="bsi"><div class="bk">Cost per Head</div><div class="bv" id="b-cph">₹0</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="ct">💸 Expenses</div><div id="exp-list"></div><button class="addbtn" onclick="showAdd('expense')">+ Add Expense</button></div>
+  <div class="card"><div class="ct">💰 Income & Sponsorship</div><div id="inc-list"></div><button class="addbtn" onclick="showAdd('income')">+ Add Income</button></div>
+</div>
+
+<!-- SCHEDULE -->
+<div class="panel" id="tab-schedule">
+  <div class="card"><div class="ct">📅 Schedule — <span style="font-family:var(--mono);font-size:.46rem;color:var(--mut);font-weight:400;letter-spacing:.5px;text-transform:none;">click any text to edit</span></div>
+    <div class="dtabs" id="dayTabs"></div>
+    <div id="schedCon"></div>
+    <button class="addbtn" onclick="addSlot()" style="margin-top:10px;">+ Add Time Slot</button>
+  </div>
+  <button class="addbtn" style="max-width:160px;" onclick="addDay()">+ Add Day</button>
+</div>
+
+<!-- PARTNERS -->
+<div class="panel" id="tab-partners">
+  <div class="card"><div class="ct">🤝 Partners & Vendors</div>
+    <div class="pgrid" id="pgrid"></div>
+  </div>
+</div>
+
+<!-- EXPANSION -->
+<div class="panel" id="tab-expand">
+  <div class="expc">
+    <p style="font-family:var(--mono);font-size:.5rem;color:var(--mut);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px;">Scaling Plan</p>
+    <h3 style="font-size:2.2rem;font-weight:700;color:var(--white);margin-bottom:6px;letter-spacing:-1px;"><span class="editable" contenteditable spellcheck="false">120 → 200 Pax</span></h3>
+    <p style="font-family:var(--mono);font-size:.55rem;color:var(--mut);">What changes when you scale up 67%</p>
+    <div class="cgrid">
+      <div class="ci cur"><div class="ck">Now — 120 Pax</div><div class="cv editable" contenteditable spellcheck="false">60 Tents · 4 Clusters</div></div>
+      <div class="ci exv"><div class="ck">Expanded — 200 Pax</div><div class="cv editable" contenteditable spellcheck="false">100 Tents · 5 Clusters</div></div>
+      <div class="ci cur"><div class="ck">Washrooms</div><div class="cv editable" contenteditable spellcheck="false">12 toilets · 6 showers</div></div>
+      <div class="ci exv"><div class="ck">Washrooms</div><div class="cv editable" contenteditable spellcheck="false">20 toilets · 10 showers</div></div>
+      <div class="ci cur"><div class="ck">Peak Power</div><div class="cv editable" contenteditable spellcheck="false">~35 kW</div></div>
+      <div class="ci exv"><div class="ck">Peak Power</div><div class="cv editable" contenteditable spellcheck="false">~55–60 kW</div></div>
+      <div class="ci cur"><div class="ck">Staff</div><div class="cv editable" contenteditable spellcheck="false">32–38 persons</div></div>
+      <div class="ci exv"><div class="ck">Staff</div><div class="cv editable" contenteditable spellcheck="false">50–55 persons</div></div>
+      <div class="ci cur"><div class="ck">Water Storage</div><div class="cv editable" contenteditable spellcheck="false">10,000L</div></div>
+      <div class="ci exv"><div class="ck">Water Storage</div><div class="cv editable" contenteditable spellcheck="false">16,000–18,000L</div></div>
+      <div class="ci cur"><div class="ck">Dining</div><div class="cv editable" contenteditable spellcheck="false">2 seatings of 60</div></div>
+      <div class="ci exv"><div class="ck">Dining</div><div class="cv editable" contenteditable spellcheck="false">3 seatings / 80-seat hall</div></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="ct">🔑 Expansion Triggers</div><ul style="font-size:.74rem;color:#777;line-height:2.1;padding-left:16px;">
+      <li class="editable" contenteditable spellcheck="false">Add Cluster E — <strong style="color:var(--white)">Tagin</strong> (25 tents + 10 extra)</li>
+      <li class="editable" contenteditable spellcheck="false">4th washroom block near new cluster</li>
+      <li class="editable" contenteditable spellcheck="false">Upsize Gen 1 to 40 kVA or add Gen 3 (15 kVA)</li>
+      <li class="editable" contenteditable spellcheck="false">Kitchen: +1 induction unit, +2 staff</li>
+      <li class="editable" contenteditable spellcheck="false">Bigger natural buffer or earth berm</li>
+      <li class="editable" contenteditable spellcheck="false">2nd reception desk for peak arrivals</li>
+      <li class="editable" contenteditable spellcheck="false">Additional porter team for luggage volume</li>
+      <li class="editable" contenteditable spellcheck="false">Expanded parking zone + traffic management</li>
+    </ul></div>
+    <div class="card"><div class="ct">⚠ Watch Points</div>
+      <div class="alert ao"><span class="ai2">🌲</span><div class="ac"><strong>Noise Gradient</strong><span>Bigger buffer mandatory at 200 pax</span></div></div>
+      <div class="alert ao"><span class="ai2">💧</span><div class="ac"><strong>Water Source</strong><span>Verify source sustains 200 pax + 55 staff</span></div></div>
+      <div class="alert ar"><span class="ai2">📋</span><div class="ac"><strong>Permits</strong><span>200 pax may trigger different permit category</span></div></div>
+      <div class="alert ag"><span class="ai2">✅</span><div class="ac"><strong>Land Secured</strong><span>2-year deal gives runway for Year 2 expansion</span></div></div>
+      <div class="alert ab"><span class="ai2">🚌</span><div class="ac"><strong>Transport</strong><span>Split convoy to avoid bottleneck at arrival</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- OPS CHECKLIST -->
+<div class="panel" id="tab-ops">
+  <div class="g2">
+    <div class="card"><div class="ct">✅ Pre-Arrival</div>
+      <div class="cks"><h4>Infrastructure</h4>
+        <div class="ckr"><input type="checkbox" id="c1"><label for="c1" class="editable" contenteditable spellcheck="false">All 60 tents pitched, guy ropes staked</label></div>
+        <div class="ckr"><input type="checkbox" id="c2"><label for="c2" class="editable" contenteditable spellcheck="false">Cluster pathways clear (2.5m min)</label></div>
+        <div class="ckr"><input type="checkbox" id="c3"><label for="c3" class="editable" contenteditable spellcheck="false">All washroom blocks tested</label></div>
+        <div class="ckr"><input type="checkbox" id="c4"><label for="c4" class="editable" contenteditable spellcheck="false">Water storage filled (10,000L+)</label></div>
+        <div class="ckr"><input type="checkbox" id="c5"><label for="c5" class="editable" contenteditable spellcheck="false">Both generators installed + 3-day fuel</label></div>
+        <div class="ckr"><input type="checkbox" id="c6"><label for="c6" class="editable" contenteditable spellcheck="false">Drainage channels dug site-wide</label></div>
+        <div class="ckr"><input type="checkbox" id="c7"><label for="c7" class="editable" contenteditable spellcheck="false">Dining tensile structure anchored</label></div>
+        <div class="ckr"><input type="checkbox" id="c8"><label for="c8" class="editable" contenteditable spellcheck="false">Entry gate + signage lit</label></div>
+        <div class="ckr"><input type="checkbox" id="c25"><label for="c25" class="editable" contenteditable spellcheck="false">Ground lanterns placed along all pathways</label></div>
+      </div>
+      <div class="cks"><h4>Guest Experience</h4>
+        <div class="ckr"><input type="checkbox" id="c9"><label for="c9" class="editable" contenteditable spellcheck="false">Welcome kit in every tent</label></div>
+        <div class="ckr"><input type="checkbox" id="c10"><label for="c10" class="editable" contenteditable spellcheck="false">Site maps printed for every guest</label></div>
+        <div class="ckr"><input type="checkbox" id="c11"><label for="c11" class="editable" contenteditable spellcheck="false">Wristbands + cluster signage ready</label></div>
+        <div class="ckr"><input type="checkbox" id="c12"><label for="c12" class="editable" contenteditable spellcheck="false">Reception desk stocked and staffed</label></div>
+        <div class="ckr"><input type="checkbox" id="c27"><label for="c27" class="editable" contenteditable spellcheck="false">Volunteer orientation briefing done</label></div>
+      </div>
+    </div>
+    <div class="card"><div class="ct">🚨 Safety & Ops</div>
+      <div class="cks"><h4>Fire & Medical</h4>
+        <div class="ckr"><input type="checkbox" id="c13"><label for="c13" class="editable" contenteditable spellcheck="false">Fire extinguisher within 15m of each cluster</label></div>
+        <div class="ckr"><input type="checkbox" id="c14"><label for="c14" class="editable" contenteditable spellcheck="false">CO2 extinguisher at generator zone</label></div>
+        <div class="ckr"><input type="checkbox" id="c15"><label for="c15" class="editable" contenteditable spellcheck="false">Sand bucket + water drum at bonfire</label></div>
+        <div class="ckr"><input type="checkbox" id="c16"><label for="c16" class="editable" contenteditable spellcheck="false">Fire Marshal named per shift</label></div>
+        <div class="ckr"><input type="checkbox" id="c17"><label for="c17" class="editable" contenteditable spellcheck="false">First aid station stocked (altitude kit)</label></div>
+        <div class="ckr"><input type="checkbox" id="c18"><label for="c18" class="editable" contenteditable spellcheck="false">Hospital contact + km confirmed</label></div>
+      </div>
+      <div class="cks"><h4>Emergency</h4>
+        <div class="ckr"><input type="checkbox" id="c19"><label for="c19" class="editable" contenteditable spellcheck="false">Emergency vehicle access route clear</label></div>
+        <div class="ckr"><input type="checkbox" id="c20"><label for="c20" class="editable" contenteditable spellcheck="false">Two evacuation routes marked per zone</label></div>
+        <div class="ckr"><input type="checkbox" id="c21"><label for="c21" class="editable" contenteditable spellcheck="false">Muster point briefed to all staff</label></div>
+        <div class="ckr"><input type="checkbox" id="c22"><label for="c22" class="editable" contenteditable spellcheck="false">Staff evacuation drill completed</label></div>
+        <div class="ckr"><input type="checkbox" id="c23"><label for="c23" class="editable" contenteditable spellcheck="false">Satellite phone / BSNL landline active</label></div>
+        <div class="ckr"><input type="checkbox" id="c24"><label for="c24" class="editable" contenteditable spellcheck="false">All leads have walkie-talkies tested</label></div>
+      </div>
+      <div class="cks"><h4>Daily Ops</h4>
+        <div class="ckr"><input type="checkbox" id="c29"><label for="c29" class="editable" contenteditable spellcheck="false">Morning ops briefing (7 AM daily)</label></div>
+        <div class="ckr"><input type="checkbox" id="c30"><label for="c30" class="editable" contenteditable spellcheck="false">Noticeboard updated with day's schedule</label></div>
+        <div class="ckr"><input type="checkbox" id="c31"><label for="c31" class="editable" contenteditable spellcheck="false">Tent structure check post first night</label></div>
+        <div class="ckr"><input type="checkbox" id="c32"><label for="c32" class="editable" contenteditable spellcheck="false">Generator fuel checked 3× daily</label></div>
+        <div class="ckr"><input type="checkbox" id="c33"><label for="c33" class="editable" contenteditable spellcheck="false">Waste collection before breakfast</label></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIG -->
+<div class="panel" id="tab-config">
+  <div style="border:1px solid var(--border);border-radius:var(--r);padding:28px;margin-bottom:16px;background:var(--bg2);position:relative;overflow:hidden;">
+    <div style="position:absolute;right:-10px;top:-20px;font-family:var(--mono);font-size:8rem;font-weight:700;color:var(--border);line-height:1;pointer-events:none;">CFG</div>
+    <p style="font-family:var(--mono);font-size:.48rem;color:var(--mut);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px;">Tweak the Numbers, Everything Updates</p>
+    <h3 style="font-size:1.6rem;font-weight:700;color:var(--white);margin-bottom:6px;letter-spacing:-.5px;">Site Settings</h3>
+    <p style="font-family:var(--mono);font-size:.55rem;color:var(--mut);">Change any value below — budgets, ratios, maps and staff counts all update instantly across every tab ✦</p>
+  </div>
+  <div class="cfg-section">
+    <div class="ct">⛺ Accommodation</div>
+    <div class="cfg-row"><div><div class="cfg-label">Total Tents</div><div class="cfg-sub">2 guests per tent default</div></div><div class="cfg-ctrl"><div class="spinner"><button onclick="adj('tents',-5)">−</button><input type="number" id="cfg-tents" value="60" onchange="applyConfig()"><button onclick="adj('tents',5)">+</button></div><span class="cfg-badge" id="cfg-pax-badge">120 pax</span></div></div>
+    <div class="cfg-row"><div><div class="cfg-label">Guests per Tent</div></div><div class="cfg-ctrl"><div class="spinner"><button onclick="adj('gpt',-1)">−</button><input type="number" id="cfg-gpt" value="2" onchange="applyConfig()"><button onclick="adj('gpt',1)">+</button></div></div></div>
+    <div class="cfg-row"><div><div class="cfg-label">Number of Clusters</div></div><div class="cfg-ctrl"><div class="spinner"><button onclick="adj('clusters',-1)">−</button><input type="number" id="cfg-clusters" value="4" onchange="applyConfig()"><button onclick="adj('clusters',1)">+</button></div></div></div>
+  </div>
+  <div class="cfg-section">
+    <div class="ct">🚿 Washrooms</div>
+    <div class="cfg-row"><div><div class="cfg-label">Washroom Blocks</div></div><div class="cfg-ctrl"><div class="spinner"><button onclick="adj('wcBlocks',-1)">−</button><input type="number" id="cfg-wcBlocks" value="3" onchange="applyConfig()"><button onclick="adj('wcBlocks',1)">+</button></div></div></div>
+    <div class="cfg-row"><div><div class="cfg-label">Toilets per Block</div></div><div class="cfg-ctrl"><div class="spinner"><button onclick="adj('tpb',-1)">−</button><input type="number" id="cfg-tpb" value="4" onchange="applyConfig()"><button onclick="adj('tpb',1)">+</button></div><span class="cfg-badge" id="cfg-toilet-badge">12 total</span></div></div>
+    <div class="cfg-row"><div><div class="cfg-label">Showers per Block</div></div><div class="cfg-ctrl"><div class="spinner"><button onclick="adj('spb',-1)">−</button><input type="number" id="cfg-spb" value="2" onchange="applyConfig()"><button onclick="adj('spb',1)">+</button></div><span class="cfg-badge" id="cfg-shower-badge">6 total</span></div></div>
+  </div>
+  <div class="cfg-section">
+    <div class="ct">👥 Staff</div>
+    <div class="cfg-row"><div><div class="cfg-label">Total Staff</div></div><div class="cfg-ctrl"><div class="spinner"><button onclick="adj('staff',-1)">−</button><input type="number" id="cfg-staff" value="38" onchange="applyConfig()"><button onclick="adj('staff',1)">+</button></div><span class="cfg-badge" id="cfg-ratio-badge">1:3.2</span></div></div>
+    <div class="cfg-row"><div><div class="cfg-label">Security Staff</div></div><div class="cfg-ctrl"><div class="spinner"><button onclick="adj('security',-1)">−</button><input type="number" id="cfg-security" value="5" onchange="applyConfig()"><button onclick="adj('security',1)">+</button></div></div></div>
+  </div>
+  <div class="cfg-section">
+    <div class="ct">⚡ Power</div>
+    <div class="cfg-row"><div><div class="cfg-label">Generator 1 (Critical)</div></div><div class="cfg-ctrl"><div class="spinner"><button onclick="adj('gen1',-5)">−</button><input type="number" id="cfg-gen1" value="25" onchange="applyConfig()"><button onclick="adj('gen1',5)">+</button></div><span class="cfg-badge">kVA</span></div></div>
+    <div class="cfg-row"><div><div class="cfg-label">Generator 2 (Entertainment)</div></div><div class="cfg-ctrl"><div class="spinner"><button onclick="adj('gen2',-5)">−</button><input type="number" id="cfg-gen2" value="15" onchange="applyConfig()"><button onclick="adj('gen2',5)">+</button></div><span class="cfg-badge">kVA</span></div></div>
+  </div>
+  <div class="cfg-section">
+    <div class="ct">💰 Budget Inputs</div>
+    <div class="cfg-row"><div><div class="cfg-label">Ticket Price / Guest</div></div><div class="cfg-ctrl"><div class="spinner"><button onclick="adj('ticketPrice',-500)">−</button><input type="number" id="cfg-ticketPrice" value="15000" onchange="applyConfig()"><button onclick="adj('ticketPrice',500)">+</button></div><span class="cfg-badge">₹</span></div></div>
+    <div class="cfg-row"><div><div class="cfg-label">F&B Cost per Head / Day</div></div><div class="cfg-ctrl"><div class="spinner"><button onclick="adj('fnbPerHead',-50)">−</button><input type="number" id="cfg-fnbPerHead" value="800" onchange="applyConfig()"><button onclick="adj('fnbPerHead',50)">+</button></div><span class="cfg-badge">₹/day</span></div></div>
+    <div class="cfg-row"><div><div class="cfg-label">Event Duration</div></div><div class="cfg-ctrl"><div class="spinner"><button onclick="adj('days',-1)">−</button><input type="number" id="cfg-days" value="3" onchange="applyConfig()"><button onclick="adj('days',1)">+</button></div><span class="cfg-badge">days</span></div></div>
+  </div>
+  <div class="cfg-section">
+    <div class="ct">📅 Festival Date</div>
+    <div class="cfg-row">
+      <div><div class="cfg-label">Countdown Target Date</div><div class="cfg-sub">Festival / event start date</div></div>
+      <div class="cfg-ctrl"><input type="date" id="cfg-festDate" value="2026-09-25" onchange="saveFestDate()" style="padding:9px 12px;border:1px solid var(--border2);border-radius:var(--r);font-size:.78rem;font-family:var(--mono);color:var(--white);outline:none;background:var(--bg3);transition:var(--tr);"></div>
+    </div>
+  </div>
+  <div class="cfg-section">
+    <div class="ct">📊 Auto-Calculated Outputs</div>
+    <div class="derived-grid" id="derived-grid"></div>
+  </div>
+</div>
+
+</div><!-- end content -->
+
+<!-- ZONE MODAL -->
+<div class="ov" id="ov" onclick="closeMod(event)">
+  <div class="modal">
+    <div class="mh">
+      <div class="macc" id="macc"></div>
+      <button class="mcl" onclick="closeModDirect()">✕</button>
+      <span class="mico" id="mico"></span>
+      <div class="mttl" id="mttl"></div>
+      <div class="msb" id="msb"></div>
+    </div>
+    <div class="mb">
+      <p class="mdes" id="mdes"></p>
+      <div class="mtgs" id="mtgs"></div>
+      <div class="mfcts" id="mfcts"></div>
+      <div class="mnotes" id="mnotes" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- INPUT MODAL -->
+<div class="iov" id="iov">
+  <div class="imod">
+    <h3 id="ittl">Add Item</h3>
+    <div id="iflds"></div>
+    <div class="ibns">
+      <button class="icanc" onclick="closeImod()">Cancel</button>
+      <button class="iconf" id="iconf">Add</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DOWNLOAD AS HTML
+function downloadHTML(){
+  var btn=document.getElementById('dl-btn');
+  btn.textContent='⏳ Saving...';
+  setTimeout(function(){
+    var html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+    var blob=new Blob([html],{type:'text/html'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='zo-basecamp.html';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    btn.textContent='✅ Saved!';
+    setTimeout(function(){btn.textContent='⬇ Save HTML';},2500);
+  },300);
+}
+
+// ── THEME TOGGLE
+function toggleTheme(){
+  var b=document.body;
+  b.classList.toggle('dark');
+  b.classList.toggle('light');
+  document.getElementById('tt-icon').textContent=b.classList.contains('light')?'☀️':'🌙';
+  document.getElementById('tt-icon2').textContent=b.classList.contains('light')?'🌙':'☀️';
+}
+
+// ── COUNTDOWN — fixed to avoid timezone off-by-one
+var festDate=null;
+function parseFestDate(v){
+  // parse as local date, not UTC
+  var p=v.split('-');
+  return new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]),0,0,0,0);
+}
+festDate=parseFestDate('2026-09-25');
+
+function pad(n){return String(n).padStart(2,'0');}
+
+function runCountdown(){
+  var now=new Date();
+  var diff=festDate-now;
+  if(diff<=0){
+    ['cd-d','cd-h','cd-m','cd-s'].forEach(function(id){document.getElementById(id).textContent='00';});
+    var u=document.getElementById('cd-urgency');
+    u.textContent='🎉 Festival Time!';u.className='cd-tag comfort';
+    document.getElementById('cd-weeks').textContent='';
+    return;
+  }
+  var days=Math.floor(diff/86400000);
+  var hrs=Math.floor((diff%86400000)/3600000);
+  var mins=Math.floor((diff%3600000)/60000);
+  var secs=Math.floor((diff%60000)/1000);
+  document.getElementById('cd-d').textContent=pad(days);
+  document.getElementById('cd-h').textContent=pad(hrs);
+  document.getElementById('cd-m').textContent=pad(mins);
+  document.getElementById('cd-s').textContent=pad(secs);
+  var weeks=Math.ceil(days/7);
+  document.getElementById('cd-weeks').textContent=weeks+' week'+(weeks!==1?'s':'')+' away';
+  var u=document.getElementById('cd-urgency');
+  if(days<30){u.textContent='🔴 Urgent';u.className='cd-tag urgent';}
+  else if(days<90){u.textContent='🟡 On Deck';u.className='cd-tag soon';}
+  else{u.textContent='🟢 Planning Mode';u.className='cd-tag comfort';}
+  var dl=document.getElementById('cd-date-lbl');
+  if(dl)dl.textContent=festDate.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+}
+runCountdown();
+setInterval(runCountdown,1000);
+
+function saveFestDate(){
+  var v=document.getElementById('cfg-festDate').value;
+  if(v){festDate=parseFestDate(v);runCountdown();}
+}
+
+// ── CLUSTER NAMES
+var clusterNames={A:'Apatani',B:'Nyishi',C:'Galo',D:'Adi'};
+function syncCluster(cluster,val){
+  clusterNames[cluster]=val;
+  document.querySelectorAll('.cluster-name[data-cluster="'+cluster+'"]').forEach(function(el){
+    if(el!==document.activeElement)el.textContent=val;
+  });
+}
+document.addEventListener('input',function(e){
+  var el=e.target;
+  if(el.classList.contains('cluster-name')&&el.dataset.cluster)syncCluster(el.dataset.cluster,el.textContent.trim());
+});
+document.addEventListener('blur',function(e){
+  var el=e.target;
+  if(el.classList.contains('cluster-name')&&el.dataset.cluster)syncCluster(el.dataset.cluster,el.textContent.trim());
+},true);
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&e.target.hasAttribute('contenteditable')){e.preventDefault();e.target.blur();}
+});
+function startEdit(e,el){e.stopPropagation();el.focus();}
+
+// ── ZONE MODAL DATA (full detail restored)
+var ZD={
+  road:{icon:'🚌',title:'Approach Road & Drop Zone',sub:'Outside Perimeter · Porter Station · Luggage Handling',color:'#555',
+    desc:'All vehicles park outside the camp perimeter. The porter team is staged here to collect all guest luggage and transport it to tents. Luggage is tagged at the Guwahati origin point for seamless delivery. A security checkpoint here controls who enters the camp.',
+    tags:['Outside perimeter','Porter staging','Luggage tagging','Security checkpoint','Vehicle parking'],
+    facts:[{k:'Distance to Gate',v:'20–30m'},{k:'Vehicle access',v:'Perimeter only'},{k:'Lighting',v:'Full overnight'},{k:'Security',v:'Checkpoint here'},{k:'Porter team',v:'Staged on arrival'},{k:'Luggage tagged',v:'At Guwahati'}],
+    notes:['No private vehicles beyond this point','Porter team briefed on tent numbers before convoy arrives','Luggage tagged in Guwahati — sorted before arrival','Security screens everyone entering through gate']},
+  entry:{icon:'🚪',title:'Entry Gate + Reception',sub:'Check-in · First Aid · Welcome Arch',color:'#F15824',
+    desc:'The Zo Basecamp branded arch is the first thing guests see after the drop zone. Warm lighting and ambient music immediately set the tone. Reception issues colour-coded wristbands, tent numbers and laminated site maps. A 3-minute welcome briefing is given to each group of guests.',
+    tags:['Branded arch','Wristband issuance','Tent assignment','Site map handout','First aid co-located','Noticeboard'],
+    facts:[{k:'Check-in time',v:'~3 min/guest'},{k:'Reception staff',v:'2 + ops lead'},{k:'First aid',v:'24hr co-located'},{k:'Noticeboard',v:'Updated 2×/day'},{k:'Wristbands',v:'Colour by cluster'},{k:'Maps',v:'1 per guest'}],
+    notes:['Wristbands colour-coded to cluster (A=purple, B=indigo, C=green, D=teal)','Briefing covers: washrooms, dining hours, bonfire zone, quiet hours, muster point','First aid stocked with altitude sickness kit, basic meds, and hospital contact','Noticeboard shows daily schedule, emergency numbers, weather alerts']},
+  fnb:{icon:'🍽',title:'F&B Zone — Kitchen + Dining',sub:'60-Seat Hall · 4-Point Buffet · 2 Seatings',color:'#D97706',
+    desc:'The dining hall seats 60 under a tensile canopy with 10 tables of 6. Two seatings of 90 minutes each cover all 120 guests. A 4-point buffet (4 concurrent service stations) prevents queue buildup. Kitchen is within 15m. Edison lighting and soft ambient music create a warm community dining atmosphere.',
+    tags:['60 seats','4-point buffet','2 seatings/90min','Tensile canopy','Induction + gas','Staff dining separate'],
+    facts:[{k:'Hall capacity',v:'60 guests/seating'},{k:'Seatings',v:'2 × 90 min'},{k:'Buffet points',v:'4 concurrent'},{k:'Kitchen dist.',v:'Max 15m'},{k:'Hot water',v:'Gas + induction'},{k:'Staff dining',v:'Separate area'}],
+    notes:['Seating 1: ~7:00–8:30 PM · Seating 2: ~8:30–10:00 PM for dinner','Breakfast is open/staggered — no fixed seatings needed','4-point buffet means max 30 people per station — no visible queue','F&B + HK team do joint clean after every meal service','Menu: local Arunachal + continental breakfast options']},
+  wash:{icon:'🚿',title:'Washroom Blocks A, B & C',sub:'3 Distributed Blocks · Gravity-Fed · Hot Water at Block A',color:'#3B82F6',
+    desc:'Three dedicated washroom blocks serve the full camp. Block A (near F&B) has hot water via solar/gas. Blocks B and C serve the cluster zones via gravity-fed elevated tanks. All blocks lit overnight. Dry composting toilets serve the late-night bonfire zone.',
+    tags:['3 full blocks','12 toilets total','6 showers total','Block A: hot water','Gravity-fed B + C','Dry toilets at bonfire'],
+    facts:[{k:'Toilet ratio',v:'1 per 10 pax'},{k:'Shower ratio',v:'1 per 15 pax'},{k:'Max walk to WC',v:'50m from tent'},{k:'Block A tanks',v:'1,000L'},{k:'Block B/C tanks',v:'1,500L each'},{k:'Overnight',v:'All fully lit'}],
+    notes:['Block A: 4 toilets, 2 showers, hot water, 1,000L tank — near F&B entrance','Block B: 4 toilets, 2 showers, gravity feed, 1,500L — between clusters A and B','Block C: 4 toilets, 2 showers, gravity feed, 1,500L — between clusters C and D','Dry compost toilets (2–4 units) at bonfire zone — serviced every morning','HK team checks and restocks all blocks 3× daily']},
+  cA:{icon:'⛺',title:'Cluster A — Social Zone',sub:'Horseshoe Arc · Closest to F&B & Bonfire',color:'#7C3AED',
+    desc:'Cluster A is the most social-facing tent zone — closest to the F&B hall and the bonfire area. Laid out in a horseshoe arc to encourage community interaction. 3m side spacing and 4m front-rear spacing between tents. Best suited for guests who want to be in the thick of the festival energy.',
+    tags:['Social cluster','Horseshoe layout','Near F&B','Near bonfire','Cluster Captain assigned','Festival-facing'],
+    facts:[{k:'Tent count',v:'15 tents'},{k:'Guests',v:'30 (2 per tent)'},{k:'To F&B',v:'60–80m'},{k:'To bonfire',v:'60m minimum'},{k:'Tent spacing',v:'3m side / 4m FB'},{k:'Noise cut',v:'1 AM protocol'}],
+    notes:['Best for social travellers, groups, and first-timers who want community','Cluster Captain runs nightly head check at 11:30 PM','Closest to the bonfire zone — 60m minimum maintained for fire safety','Pathways lit with ground lanterns from cluster to F&B and bonfire']},
+  cB:{icon:'⛺',title:'Cluster B — Social Zone',sub:'Horseshoe Arc · 8–10m Buffer from Cluster A',color:'#5B21B6',
+    desc:'Cluster B mirrors A in layout but is set back 8–10m as a buffer. Still in the social zone — great energy, close to the action, but with slightly more breathing room than A. Ideal for groups who want community without being right at the bonfire.',
+    tags:['Social cluster','8–10m buffer from A','Horseshoe layout','Cluster Captain assigned','Festival-energy'],
+    facts:[{k:'Tent count',v:'15 tents'},{k:'Guests',v:'30 (2 per tent)'},{k:'Buffer from A',v:'8–10m'},{k:'To bonfire',v:'80–100m'},{k:'To washroom B',v:'30–40m'},{k:'Noise cut',v:'1 AM protocol'}],
+    notes:['Natural buffer of 8–10m from Cluster A creates subtle separation','Shares Wash Block B with Cluster A — located between the two','Cluster Captain enforces 1 AM quiet transition with Cluster A captain','Ideal for friend groups who want community but not the loudest spot']},
+  cC:{icon:'⛺',title:'Cluster C — Quiet Zone',sub:'Natural Treeline Buffer · 1 AM Strict Protocol',color:'#059669',
+    desc:'Cluster C sits behind the natural treeline buffer which acts as an acoustic barrier between the social zones and quiet zones. Ideal for couples, solo travellers, and early risers. The treeline absorbs bonfire noise. Quiet protocol is strictly enforced from 1 AM by the Cluster Captain.',
+    tags:['Quiet zone','Treeline buffer','1 AM strict','Couples + early risers','Cluster Captain','Acoustic barrier'],
+    facts:[{k:'Tent count',v:'15 tents'},{k:'Guests',v:'30 (2 per tent)'},{k:'To bonfire',v:'100–120m'},{k:'Noise buffer',v:'Natural treeline'},{k:'Quiet from',v:'1 AM enforced'},{k:'Washroom',v:'Block C nearby'}],
+    notes:['Treeline provides natural acoustic separation — measurably quieter than A/B','Quiet from 1 AM — no exceptions, Cluster Captain enforces this firmly','Best suited for couples, solo travellers, or guests with early morning plans','Pathway to F&B and bonfire zone is lit but guests choose when to use it']},
+  cD:{icon:'⛺',title:'Cluster D — Deep Quiet Zone',sub:'Maximum Buffer · Deepest Privacy · 120–150m+ from Bonfire',color:'#047857',
+    desc:'Cluster D is the furthest tent zone from all activity — 120–150m+ from the bonfire, past the treeline buffer. Maximum acoustic and visual separation. Strictest quiet zone on site. Ideal for light sleepers, meditators, and guests who prioritise rest above all else.',
+    tags:['Deepest quiet','Max buffer','120–150m+ from bonfire','Strictest quiet hours','Light sleepers','Private'],
+    facts:[{k:'Tent count',v:'15 tents'},{k:'Guests',v:'30 (2 per tent)'},{k:'To bonfire',v:'120–150m+'},{k:'Quiet from',v:'1 AM strict'},{k:'Noise buffer',v:'Treeline + distance'},{k:'Washroom',v:'Block C shared'}],
+    notes:['Furthest from bonfire and F&B — most private and quietest location on site','Cluster D Captain has zero-tolerance on 1 AM rule — no second warnings','Path to main camp is well-lit but guests typically stay in zone after 11 PM','Ideal for guests who will be first up for sunrise walks or yoga']},
+  fire:{icon:'🔥',title:'Bonfire + Activity Zone',sub:'Live Jamming · Acoustic Sets · PA System · Till 1 AM',color:'#DC2626',
+    desc:'The social heart of Zo Basecamp after dark. A full PA system powered by Generator 2 supports live jamming and acoustic sets. Community fire circle, guitar sessions, djembe, and open jams. Fire safety is rigorously managed — sand bucket and water drum at perimeter, Fire Marshal on every shift.',
+    tags:['Live jamming','Acoustic PA','Community fire','Till 1 AM hard stop','Fire Marshal','Dry toilets on-site'],
+    facts:[{k:'PA system',v:'Powered by Gen 2'},{k:'Hard stop',v:'1 AM — enforced'},{k:'Min from tent',v:'60m clearance'},{k:'Noise buffer',v:'Treeline to C+D'},{k:'Fire safety',v:'Sand + water drum'},{k:'Toilets',v:'2–4 dry units nearby'}],
+    notes:['PA on Generator 2 (15 kVA entertainment circuit) — no overload with kitchen','Fire circle cleared of flammable material in 3m radius','Fire Marshal rotates every 2 hours — handover briefing required','1 AM hard stop — Cluster Captains A and B lead guests back to tents','Dry toilets nearby so guests don\'t need to walk 80m to main blocks at night']},
+  gen:{icon:'⚡',title:'Generator Zone',sub:'25 kVA Critical + 15 kVA Entertainment · 80m from Tents',color:'#555',
+    desc:'Two generators in a locked acoustic enclosure at the utility end of site, minimum 80m from the nearest tent. Generator 1 (25 kVA) powers all critical loads — kitchen, washrooms, lights, pumps. Generator 2 (15 kVA) powers entertainment — PA, bonfire zone. Three-day fuel supply mandatory at all times.',
+    tags:['Gen 1: 25 kVA critical','Gen 2: 15 kVA entertainment','80m min from tents','Acoustic enclosure','3-day fuel reserve','24hr technician'],
+    facts:[{k:'Gen 1',v:'25 kVA — critical'},{k:'Gen 2',v:'15 kVA — entertain.'},{k:'Min distance',v:'80m from tents'},{k:'Max load rule',v:'80% capacity'},{k:'Fuel reserve',v:'3-day minimum'},{k:'Technician',v:'On-call 24hr'}],
+    notes:['Never run either generator above 80% capacity — buffer for surge loads','Fuel checked 3× daily: morning, afternoon, post-midnight by generator technician','Separate earth/grounding for each generator — safety critical in wet conditions','Acoustic enclosure reduces noise at 80m to comfortable background level','Emergency shutdown procedure posted on enclosure door and given to Camp Director']},
+  water:{icon:'💧',title:'Water Storage & Supply',sub:'10,000L Main Tank · Gravity-Fed · Pump Backup',color:'#3B82F6',
+    desc:'Main storage tank of 10,000L minimum provides a 2-day buffer for 120 guests + 38 staff. Elevated sub-tanks at each wash block enable gravity-fed distribution without needing constant pump power. Pump + generator backup ensures pressure during peak morning usage.',
+    tags:['10,000L main tank','2-day buffer','Gravity-fed blocks','Pump + gen backup','Hot water: Block A','Soakpit drainage'],
+    facts:[{k:'Main tank',v:'10,000L minimum'},{k:'Buffer',v:'2-day supply'},{k:'Sub-tanks',v:'1,000–1,500L each'},{k:'Hot water',v:'Solar/gas at Block A'},{k:'Backup',v:'Pump on generator'},{k:'Drainage',v:'Channels pre-dug'}],
+    notes:['Assume 50L per person per day — 158 people × 50L = ~8,000L/day','10,000L tank = 1.25 day buffer — fill every day without fail','Soakpit or biodigester for grey/black water — no direct ground discharge','All drainage channels dug and inspected before guest arrival day','Daily water level check at 7 AM ops briefing — alert if below 60%']},
+  store:{icon:'📦',title:'Backend Store',sub:'Equipment & Supplies · Ops Access Only',color:'#555',
+    desc:'Perimeter-located utility store containing spare equipment, tools, first aid overflow, and daily consumables. Ops access only — no guest access. Daily inventory count ensures stock levels never drop critically. The store also holds the 3-day emergency fuel reserve documentation and spare tent hardware.',
+    tags:['Ops access only','Spare tent hardware','Tools + consumables','Daily inventory','Emergency supplies','Fuel documents'],
+    facts:[{k:'Access',v:'Ops team only'},{k:'Inventory',v:'Daily log required'},{k:'Contents',v:'Pegs, tools, spares'},{k:'First aid',v:'Overflow stock'},{k:'Fuel docs',v:'Stored here'},{k:'Location',v:'Perimeter end'}],
+    notes:['Store locked at all times — key with Camp Director and Ground Ops Lead only','Daily inventory: spare pegs, mallets, linen, toiletries, first aid refills','Tent hardware spares: 50 extra pegs, 10 extra guy ropes, 2 spare tent poles','Emergency contact sheet and incident report forms kept in fireproof folder here']},
+};
+
+var CFG={tents:60,gpt:2,clusters:4,wcBlocks:3,tpb:4,spb:2,staff:38,security:5,gen1:25,gen2:15,ticketPrice:15000,fnbPerHead:800,days:3};
+
+function adj(k,d){
+  var mn={tents:10,gpt:1,clusters:2,wcBlocks:1,tpb:1,spb:1,staff:10,security:2,gen1:10,gen2:5,ticketPrice:5000,fnbPerHead:100,days:1};
+  var el=document.getElementById('cfg-'+k);
+  CFG[k]=Math.max(mn[k]||1,(parseInt(el.value)||CFG[k])+d);
+  el.value=CFG[k];applyConfig();
+}
+
+function setT(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+
+function applyConfig(){
+  Object.keys(CFG).forEach(function(k){var el=document.getElementById('cfg-'+k);if(el)CFG[k]=parseInt(el.value)||CFG[k];});
+  var pax=CFG.tents*CFG.gpt,tt=CFG.wcBlocks*CFG.tpb,ts=CFG.wcBlocks*CFG.spb;
+  var tpc=Math.floor(CFG.tents/CFG.clusters);
+  var up=Math.round((CFG.gen1+CFG.gen2)*.8);
+  var tr2=Math.round(pax/tt*10)/10,sr=Math.round(pax/ts*10)/10,stR=Math.round(pax/CFG.staff*10)/10;
+  var rev=pax*CFG.ticketPrice,fnb=pax*CFG.fnbPerHead*CFG.days;
+
+  setT('cfg-pax-badge',pax+' pax');setT('cfg-toilet-badge',tt+' total');setT('cfg-shower-badge',ts+' total');setT('cfg-ratio-badge','1:'+stR);
+  setT('hp-tents',CFG.tents+' Tents');setT('hp-pax',pax+' Guests');setT('hp-staff',CFG.staff+' Staff');
+  setT('ov-tents',CFG.tents);setT('ov-pax',pax);setT('ov-clusters',CFG.clusters);setT('ov-wc',CFG.wcBlocks);setT('ov-pow',up+'kW');setT('ov-staff',CFG.staff);
+
+  var rd=document.getElementById('ratio-display');
+  if(rd){
+    var rs=[
+      {i:'🚽',l:'Toilet ratio',v:'1 per '+tr2+' guests',ok:tr2<=10},
+      {i:'🚿',l:'Shower ratio',v:'1 per '+sr+' guests',ok:sr<=15},
+      {i:'👤',l:'Staff ratio',v:'1 per '+stR+' guests',ok:stR<=4},
+      {i:'⚡',l:'Total power',v:up+'kW usable (80% of '+(CFG.gen1+CFG.gen2)+'kVA)',ok:true},
+      {i:'💧',l:'Water needed',v:Math.round(pax*50*CFG.days/1000)+'kL for '+CFG.days+' days',ok:true},
+    ];
+    rd.innerHTML=rs.map(function(r){return'<div class="alert '+(r.ok?'ag':'ao')+'" style="margin-bottom:6px;"><span class="ai2">'+r.i+'</span><div class="ac"><strong>'+r.l+'</strong><span>'+r.v+'</span></div></div>';}).join('');
+  }
+  ['cA','cB','cC','cD'].forEach(function(c){setT('mz-'+c+'-t',tpc);});
+  ['cA','cB','cC','cD'].forEach(function(c){setT('zc-'+c+'-t',tpc+' tents · '+(tpc*CFG.gpt)+' guests');});
+  ['a','b','c'].forEach(function(l,i){setT('wc-'+l+'-d',CFG.tpb+' toilets · '+CFG.spb+' showers'+(l==='a'?' · hot water':'')+(i>0?' · gravity feed':'')+' · '+(i===0?'1,000':'1,500')+'L tank');});
+  setT('wc-ratio-t','1 toilet per '+tr2+' pax · 1 shower per '+sr+' pax');
+  setT('staff-total-t',CFG.staff+' staff · ratio 1:'+stR);
+  setT('tent-status',CFG.tents+' tents required — verify stock before arrival');
+  setT('b-pax-label',pax+' Pax · '+CFG.days+' Days');
+  var gs=document.getElementById('gen-summary');
+  if(gs)gs.innerHTML='Gen 1: <strong style="color:var(--white)">'+CFG.gen1+' kVA</strong> — Critical · Gen 2: <strong style="color:var(--white)">'+CFG.gen2+' kVA</strong> — Entertainment';
+  var wc=document.getElementById('water-cap');
+  if(wc)wc.textContent=Math.ceil(pax*50*CFG.days/10000)*10+'kL min';
+  var dg=document.getElementById('derived-grid');
+  if(dg){
+    var items=[
+      {k:'Total Guests',v:pax,s:'@ '+CFG.gpt+'/tent'},
+      {k:'Tents/Cluster',v:tpc,s:CFG.clusters+' clusters'},
+      {k:'Toilets',v:tt,s:'1 per '+tr2+' guests'},
+      {k:'Showers',v:ts,s:'1 per '+sr+' guests'},
+      {k:'Usable Power',v:up+'kW',s:'80% of '+(CFG.gen1+CFG.gen2)+'kVA'},
+      {k:'Water Needed',v:Math.round(pax*50*CFG.days/1000)+'kL',s:'50L×'+pax+'×'+CFG.days+'d'},
+      {k:'Ticket Revenue',v:'₹'+Math.round(rev/100000)+'L',s:pax+'×₹'+CFG.ticketPrice.toLocaleString('en-IN')},
+      {k:'F&B Cost',v:'₹'+Math.round(fnb/100000)+'L',s:'₹'+CFG.fnbPerHead+'/d×'+CFG.days+'d'},
+    ];
+    dg.innerHTML=items.map(function(i){return'<div class="derived-item"><div class="dk">'+i.k+'</div><div class="dv">'+i.v+'</div><div class="ds">'+i.s+'</div></div>';}).join('');
+  }
+  exps.forEach(function(e){if(e.auto&&e.n.includes('F&B'))e.a=fnb;});
+  incs.forEach(function(i){if(i.auto)i.a=rev;});
+  renderBudget(pax);
+}
+
+function showTab(id,el){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.ntab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('tab-'+id).classList.add('active');
+  if(el&&el.classList)el.classList.add('active');
+}
+
+function openModal(key,el){
+  var d=ZD[key];if(!d)return;
+  document.getElementById('mico').textContent=d.icon;
+  document.getElementById('mttl').textContent=d.title;
+  document.getElementById('msb').textContent=d.sub;
+  document.getElementById('mdes').textContent=d.desc;
+  document.getElementById('macc').style.background=d.color;
+  document.getElementById('mtgs').innerHTML=d.tags.map(function(t){return'<span class="mtg">'+t+'</span>';}).join('');
+  document.getElementById('mfcts').innerHTML=d.facts.map(function(f){return'<div class="mfc"><div class="fk">'+f.k+'</div><div class="fv">'+f.v+'</div></div>';}).join('');
+  var nEl=document.getElementById('mnotes');
+  if(d.notes&&d.notes.length){
+    nEl.style.display='block';
+    nEl.innerHTML='<h5>Ops Notes</h5><ul>'+d.notes.map(function(n){return'<li>'+n+'</li>';}).join('')+'</ul>';
+  }else{nEl.style.display='none';}
+  document.getElementById('ov').classList.add('open');
+  document.body.style.overflow='hidden';
+  document.querySelectorAll('.zt').forEach(function(z){z.classList.remove('selected');});
+  if(el)el.classList.add('selected');
+}
+function closeMod(e){if(e.target===document.getElementById('ov'))closeModDirect();}
+function closeModDirect(){document.getElementById('ov').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeModDirect();closeImod();}});
+
+// ── BUDGET
+var exps=[
+  {ic:'⛺',n:'Tent & Camping Infrastructure',s:'Tents, pegs, guy ropes, ground sheets',a:360000},
+  {ic:'🚿',n:'Washroom Blocks',s:'3 blocks with plumbing and fixtures',a:240000},
+  {ic:'👥',n:'Staff & Volunteer Costs',s:'32–38 persons for event duration',a:280000},
+  {ic:'🍽',n:'F&B Costs',s:'Meals, snacks, beverages (auto)',a:288000,auto:true},
+  {ic:'🚌',n:'Transport — Guwahati Transfers',s:'Bus convoy + on-site shuttles',a:120000},
+  {ic:'⚡',n:'Generator & Power Setup',s:'2 generators + 3-day fuel + cabling',a:90000},
+  {ic:'💧',n:'Water Storage & Plumbing',s:'10,000L tank + pipes + pumps',a:60000},
+  {ic:'🏗',n:'Dining Structure & Equipment',s:'Tensile, tables, kitchen gear',a:150000},
+  {ic:'🛡',n:'Security',s:'Local security personnel',a:40000},
+  {ic:'📣',n:'Branding & Guest Experience',s:'Arch, signage, welcome kits, lanterns',a:80000},
+  {ic:'🔧',n:'Contingency (10%)',s:'Unexpected costs',a:171000},
+];
+var incs=[
+  {ic:'🎟',n:'Ticket Revenue',s:'Auto-calculated from config',a:1800000,auto:true},
+  {ic:'🤝',n:'Title Sponsor',s:'Brand visibility + activation',a:200000},
+  {ic:'📸',n:'Content Partner',s:'Photography + reels',a:50000},
+  {ic:'☕',n:'Araku Coffee — Beverage Partner',s:'In-kind + cash',a:40000},
+];
+function fmt(n){return'₹'+Math.round(n).toLocaleString('en-IN');}
+function renderBudget(pax){
+  pax=pax||CFG.tents*CFG.gpt;
+  var te=0,ti=0;
+  document.getElementById('exp-list').innerHTML=exps.map(function(e,i){te+=e.a;return'<div class="brow"><div class="bico">'+e.ic+'</div><div class="binf"><div class="bn"><span class="editable" contenteditable spellcheck="false" onblur="exps['+i+'].n=this.textContent">'+e.n+'</span>'+(e.auto?'<span style="font-family:var(--mono);font-size:.42rem;color:var(--zo);margin-left:6px;border:1px solid rgba(241,88,36,.25);padding:1px 6px;border-radius:2px;font-weight:700;">AUTO</span>':'')+'</div><div class="bs"><span class="editable" contenteditable spellcheck="false" onblur="exps['+i+'].s=this.textContent">'+e.s+'</span></div></div><span class="btyp exp">Exp</span><div class="bamt" contenteditable spellcheck="false" style="outline:none;cursor:text;" onblur="exps['+i+'].a=parseFloat(this.textContent.replace(/[^0-9.]/g,\'\'))||exps['+i+'].a;renderBudget()">'+fmt(e.a)+'</div><button class="bdel" onclick="delB(\'e\','+i+')">✕</button></div>';}).join('');
+  document.getElementById('inc-list').innerHTML=incs.map(function(e,i){ti+=e.a;return'<div class="brow"><div class="bico">'+e.ic+'</div><div class="binf"><div class="bn"><span class="editable" contenteditable spellcheck="false" onblur="incs['+i+'].n=this.textContent">'+e.n+'</span>'+(e.auto?'<span style="font-family:var(--mono);font-size:.42rem;color:var(--zo);margin-left:6px;border:1px solid rgba(241,88,36,.25);padding:1px 6px;border-radius:2px;font-weight:700;">AUTO</span>':'')+'</div><div class="bs"><span class="editable" contenteditable spellcheck="false" onblur="incs['+i+'].s=this.textContent">'+e.s+'</span></div></div><span class="btyp inc">Inc</span><div class="bamt" contenteditable spellcheck="false" style="outline:none;cursor:text;" onblur="incs['+i+'].a=parseFloat(this.textContent.replace(/[^0-9.]/g,\'\'))||incs['+i+'].a;renderBudget()">'+fmt(e.a)+'</div><button class="bdel" onclick="delB(\'i\','+i+')">✕</button></div>';}).join('');
+  document.getElementById('b-exp').textContent=fmt(te);
+  document.getElementById('b-inc').textContent=fmt(ti);
+  var pnl=ti-te;
+  var pe=document.getElementById('b-pnl');
+  pe.textContent=(pnl>=0?'+':'')+fmt(pnl);pe.style.color=pnl>=0?'var(--acid2)':'#f87171';
+  document.getElementById('b-cph').textContent=fmt(te/pax);
+}
+function delB(t,i){t==='e'?exps.splice(i,1):incs.splice(i,1);renderBudget();}
+var pendType='';
+function showAdd(type){
+  pendType=type;
+  document.getElementById('ittl').textContent=type==='expense'?'Add Expense':'Add Income';
+  document.getElementById('iflds').innerHTML='<div class="ifd"><label>Icon</label><input id="fi" value="💼" maxlength="4"></div><div class="ifd"><label>Name</label><input id="fn" placeholder="Item name"></div><div class="ifd"><label>Description</label><input id="fs" placeholder="Short description"></div><div class="ifd"><label>Amount (₹)</label><input id="fa" type="number" placeholder="e.g. 50000"></div>';
+  document.getElementById('iconf').onclick=confirmAdd;
+  document.getElementById('iov').classList.add('open');
+}
+function confirmAdd(){
+  var ic=document.getElementById('fi').value||'💼',n=document.getElementById('fn').value,s=document.getElementById('fs').value,a=parseFloat(document.getElementById('fa').value)||0;
+  if(!n){alert('Enter a name');return;}
+  pendType==='expense'?exps.push({ic:ic,n:n,s:s,a:a}):incs.push({ic:ic,n:n,s:s,a:a});
+  renderBudget();closeImod();
+}
+
+// ── SCHEDULE
+var days_data=[
+  {label:'Day 1 — Arrival',slots:[
+    {t:'6:00 AM',h:'🚌 Convoy Departs — Guwahati',d:'Bus convoy leaves. Luggage tagged.',b:'s-ops',bl:'Ops'},
+    {t:'12:00 PM',h:'🍱 Lunch En Route',d:'Roadside stop — packed lunch or dhaba',b:'s-fnb',bl:'F&B'},
+    {t:'4:00 PM',h:'🏕 Arrival at Zo Basecamp',d:'Check-in, wristbands, orientation, tent drop',b:'s-all',bl:'All'},
+    {t:'5:30 PM',h:'🛁 Free Window',d:'60 min unprogrammed — settle in',b:'s-all',bl:'All'},
+    {t:'7:00 PM',h:'🍽 Welcome Dinner',d:'First community meal at camp',b:'s-fnb',bl:'F&B'},
+    {t:'9:00 PM',h:'🔥 Opening Bonfire',d:'Welcome fire, introductions, acoustic jam',b:'s-soc',bl:'Social'},
+    {t:'1:00 AM',h:'😴 Quiet Hours',d:'Cluster captains enforce noise protocol',b:'s-ops',bl:'Ops'},
+  ]},
+  {label:'Day 2 — Festival',slots:[
+    {t:'7:00 AM',h:'☀ Breakfast',d:'Open dining, free time',b:'s-fnb',bl:'F&B'},
+    {t:'9:30 AM',h:'🚌 Convoy to Ziro Festival',d:'Shuttles to festival venue',b:'s-ops',bl:'Ops'},
+    {t:'10:00 AM',h:'🎵 Ziro Festival of Music',d:'Full day at festival',b:'s-all',bl:'All'},
+    {t:'5:30 PM',h:'🔁 Return Shuttles',d:'Staggered return every 45 min',b:'s-ops',bl:'Ops'},
+    {t:'7:30 PM',h:'🍽 Dinner at Camp',d:'Community meal, wind-down',b:'s-fnb',bl:'F&B'},
+    {t:'9:30 PM',h:'🎸 Night Jamming',d:'Live music, bonfire, community circle',b:'s-soc',bl:'Social'},
+  ]},
+  {label:'Day 3 — Departure',slots:[
+    {t:'6:30 AM',h:'🌄 Sunrise Free Time',d:'Optional walk, photography',b:'s-all',bl:'All'},
+    {t:'7:30 AM',h:'🥞 Farewell Breakfast',d:'Last community meal together',b:'s-fnb',bl:'F&B'},
+    {t:'9:00 AM',h:'📦 Checkout',d:'Luggage out, tent check, wristband return',b:'s-ops',bl:'Ops'},
+    {t:'10:30 AM',h:'🚌 Departure Convoy',d:'Return to Guwahati',b:'s-ops',bl:'Ops'},
+  ]},
+];
+var ad=0;
+function renderSched(){
+  document.getElementById('dayTabs').innerHTML=days_data.map(function(d,i){return'<button class="dtab'+(i===ad?' active':'')+'" onclick="setDay('+i+')"><span class="editable" contenteditable spellcheck="false" onblur="days_data['+i+'].label=this.textContent;renderSched()" onclick="event.stopPropagation()">'+d.label+'</span></button>';}).join('');
+  document.getElementById('schedCon').innerHTML=days_data[ad].slots.map(function(s,i){return'<div class="sslot"><div class="stime"><span class="editable" contenteditable spellcheck="false" onblur="days_data[ad].slots['+i+'].t=this.textContent">'+s.t+'</span></div><div class="scon"><h4><span class="editable" contenteditable spellcheck="false" onblur="days_data[ad].slots['+i+'].h=this.textContent">'+s.h+'</span></h4><p><span class="editable" contenteditable spellcheck="false" onblur="days_data[ad].slots['+i+'].d=this.textContent">'+s.d+'</span></p><span class="sbdg '+s.b+'">'+s.bl+'</span></div><button class="bdel" style="margin-left:auto;opacity:0;" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0" onclick="delSlot('+i+')">✕</button></div>';}).join('');
+}
+function setDay(i){ad=i;renderSched();}
+function addDay(){
+  document.getElementById('ittl').textContent='Add Day';
+  document.getElementById('iflds').innerHTML='<div class="ifd"><label>Day Label</label><input id="dlabel" placeholder="e.g. Day 4 — Bonus Day"></div>';
+  document.getElementById('iconf').onclick=function(){var lb=document.getElementById('dlabel').value||'Day '+(days_data.length+1);days_data.push({label:lb,slots:[]});ad=days_data.length-1;renderSched();closeImod();};
+  document.getElementById('iov').classList.add('open');
+}
+function delSlot(i){days_data[ad].slots.splice(i,1);renderSched();}
+function addSlot(){
+  document.getElementById('ittl').textContent='Add Schedule Slot';
+  document.getElementById('iflds').innerHTML='<div class="ifd"><label>Time</label><input id="st" placeholder="e.g. 9:00 AM"></div><div class="ifd"><label>Activity</label><input id="sh" placeholder="Activity title"></div><div class="ifd"><label>Description</label><input id="sd" placeholder="Brief description"></div><div class="ifd"><label>Category</label><select id="sc"><option value="s-ops|Ops">Operations</option><option value="s-fnb|F&B">F&B</option><option value="s-soc|Social">Social</option><option value="s-all|All">All Guests</option></select></div>';
+  document.getElementById('iconf').onclick=confirmSlot;
+  document.getElementById('iov').classList.add('open');
+}
+function confirmSlot(){
+  var t=document.getElementById('st').value||'TBD',h=document.getElementById('sh').value,d=document.getElementById('sd').value,cv=document.getElementById('sc').value.split('|');
+  if(!h){alert('Enter activity title');return;}
+  days_data[ad].slots.push({t:t,h:h,d:d,b:cv[0],bl:cv[1]});renderSched();closeImod();
+}
+
+// ── PARTNERS
+var partners=[
+  {ic:'🎵',n:'Ziro Festival of Music',r:'Primary Festival Partner',d:'Core event venue, programming & music',t:'Event',tc:'rgba(99,102,241,.12)',tt:'#818CF8'},
+  {ic:'☕',n:'Araku Coffee',r:'Beverage Partner',d:'Morning coffee & specialty beverages',t:'F&B',tc:'rgba(217,119,6,.12)',tt:'#F59E0B'},
+  {ic:'🎒',n:'Wildcraft',r:'Gear & Equipment Sponsor',d:'Backpacks, tents, sleeping gear',t:'Gear',tc:'rgba(52,211,153,.1)',tt:'#34D399'},
+  {ic:'📸',n:'Content Studio',r:'Official Documentation',d:'Photography, reels & content rights',t:'Media',tc:'rgba(167,139,250,.1)',tt:'#A78BFA'},
+  {ic:'🚌',n:'Transport Partner',r:'Convoy & Transfers',d:'Guwahati–Ziro convoy + site shuttles',t:'Vendor',tc:'rgba(96,165,250,.1)',tt:'#60A5FA'},
+];
+function renderPartners(){
+  document.getElementById('pgrid').innerHTML=
+    partners.map(function(p,i){
+      var bc=p.tt.indexOf('rgb')===0?p.tt.replace(')',',0.25)').replace('rgb','rgba'):p.tt+'40';
+      return'<div class="pcard">'+
+        '<button class="pcdel" onclick="delP('+i+')">✕</button>'+
+        '<div class="plogo" contenteditable spellcheck="false" style="cursor:text;" onblur="partners['+i+'].ic=this.textContent.trim();renderPartners()">'+p.ic+'</div>'+
+        '<span class="pname editable" contenteditable spellcheck="false" onblur="partners['+i+'].n=this.textContent">'+p.n+'</span>'+
+        '<span class="prole editable" contenteditable spellcheck="false" onblur="partners['+i+'].r=this.textContent">'+p.r+'</span>'+
+        '<span class="pdesc editable" contenteditable spellcheck="false" onblur="partners['+i+'].d=this.textContent">'+p.d+'</span>'+
+        '<span class="ptyp editable" contenteditable spellcheck="false" style="background:'+p.tc+';color:'+p.tt+';border:1px solid '+bc+';" onblur="partners['+i+'].t=this.textContent">'+p.t+'</span>'+
+      '</div>';
+    }).join('')+
+    '<button class="padd" onclick="showAddP()">'+
+      '<span style="font-size:2.2rem;color:var(--mut)">+</span>'+
+      '<span style="font-family:var(--mono);font-size:.68rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.8px;">Add Partner</span>'+
+    '</button>';
+}
+function delP(i){partners.splice(i,1);renderPartners();}
+function showAddP(){
+  document.getElementById('ittl').textContent='Add Partner / Vendor';
+  document.getElementById('iflds').innerHTML='<div class="ifd"><label>Icon</label><input id="pi" value="🏢" maxlength="4"></div><div class="ifd"><label>Brand Name</label><input id="pn" placeholder="e.g. Royal Enfield"></div><div class="ifd"><label>Role</label><input id="pr" placeholder="e.g. Official Ride Partner"></div><div class="ifd"><label>Description</label><input id="pd" placeholder="What they do at camp"></div><div class="ifd"><label>Type</label><select id="pt"><option>Sponsor</option><option>Vendor</option><option>Media</option><option>F&B</option><option>Gear</option><option>Event</option><option>Tech</option></select></div>';
+  document.getElementById('iconf').onclick=confirmAddP;
+  document.getElementById('iov').classList.add('open');
+}
+function confirmAddP(){
+  var ic=document.getElementById('pi').value||'🏢',n=document.getElementById('pn').value,r=document.getElementById('pr').value,d=document.getElementById('pd').value,t=document.getElementById('pt').value;
+  if(!n){alert('Enter a name');return;}
+  var cm={Sponsor:['rgba(241,88,36,.1)','#FF7A45'],Vendor:['rgba(52,211,153,.1)','#34D399'],Media:['rgba(167,139,250,.1)','#A78BFA'],'F&B':['rgba(217,119,6,.12)','#F59E0B'],Gear:['rgba(52,211,153,.1)','#34D399'],Event:['rgba(99,102,241,.12)','#818CF8'],Tech:['rgba(96,165,250,.1)','#60A5FA']};
+  var c=cm[t]||['rgba(255,255,255,.06)','#888'];
+  partners.push({ic:ic,n:n,r:r,d:d,t:t,tc:c[0],tt:c[1]});
+  renderPartners();closeImod();
+}
+function closeImod(){document.getElementById('iov').classList.remove('open');}
+document.getElementById('iov').addEventListener('click',function(e){if(e.target===document.getElementById('iov'))closeImod();});
+
+// ── POWER BARS
+var pwD=[
+  {l:'Kitchen — induction + fridge + lights',v:10},
+  {l:'Dining + F&B lighting',v:2.5},
+  {l:'Tents (60 × 40W)',v:2.4},
+  {l:'Washroom blocks + pumps',v:3.5},
+  {l:'Bonfire zone — PA + lights',v:6.5},
+  {l:'Security + pathway lighting',v:1.5},
+  {l:'Guest charging stations (×4)',v:2.5},
+  {l:'Reception + ops',v:2.0},
+  {l:'Hot water systems',v:5.0},
+];
+var pw=document.getElementById('pw-rows');
+if(pw){
+  var tot=pwD.reduce(function(s,d){return s+d.v;},0);
+  pwD.forEach(function(d){pw.innerHTML+='<div class="pwr-row"><div class="pwr-label">'+d.l+'</div><div class="pwr-bar-wrap"><div class="pwr-bar" data-w="'+Math.round(d.v/tot*100)+'%"></div></div><div class="pwr-val">'+d.v+'kW</div></div>';});
+  pw.innerHTML+='<div class="pwr-row" style="background:rgba(241,88,36,.05);border-radius:var(--r);margin-top:4px;"><div class="pwr-label" style="font-weight:700;color:var(--zo);font-family:var(--mono);font-size:.58rem;text-transform:uppercase;letter-spacing:.5px;">Total Peak</div><div class="pwr-bar-wrap"><div class="pwr-bar" data-w="100%"></div></div><div class="pwr-val" style="font-size:.7rem;">~'+tot.toFixed(1)+'kW</div></div>';
+  setTimeout(function(){document.querySelectorAll('[data-w]').forEach(function(b){b.style.width=b.dataset.w;});},600);
+}
+
+// init
+applyConfig();renderBudget();renderSched();renderPartners();
+</script>
+</body>
+</html>
